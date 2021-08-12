@@ -1,6 +1,8 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from '../components/Layout';
+import Landing from '../components/Landing';
+import { socket } from '../store/store';
 
 const Index: NextPage = () => {
   return (
@@ -12,7 +14,7 @@ const Index: NextPage = () => {
       </Head>
 
       <Layout>
-        <div></div>
+        <Landing socket={socket} />
       </Layout>
     </div>
   );

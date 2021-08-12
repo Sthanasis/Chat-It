@@ -1,4 +1,4 @@
-import styles from '../../styles/Toolbar/Toolbar.module.css';
+import styles from '../../styles/Toolbar.module.css';
 import Profiler from './Profiler';
 
 const NavBar = (): JSX.Element => {

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserAlt } from '@fortawesome/free-solid-svg-icons';
-import styles from '../../styles/Toolbar/Toolbar.module.css';
+import styles from '../../styles/Toolbar.module.css';
 
 const Profiler = (): JSX.Element => {
   return (
