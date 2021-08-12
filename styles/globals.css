@@ -1,9 +1,18 @@
+:root {
+  --lighterColor: #e3f5e6;
+  --lightColor: #c4ebc8;
+  --normalColor: #b0d3b4;
+  --darkColor: #728b77;
+  --darkestColor: #202a25;
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  color: var(--darkestColor);
 }
 
 a {
@@ -13,4 +22,14 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url(../assets/fonts/Gilroy-Light.otf);
+}
+
+@font-face {
+  font-family: 'Gilroy-Bold';
+  src: url(../assets/fonts/Gilroy-ExtraBold.otf);
 }
