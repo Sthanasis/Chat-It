@@ -1,7 +1,7 @@
 .input {
   display: flex;
   flex-flow: column;
-  color: var(--lightColor);
+  color: var(--normalColor);
   font-size: 20px;
   font-family: 'open-sans';
   margin: 10px 0;
@@ -10,43 +10,49 @@
 .input label {
   text-transform: capitalize;
   letter-spacing: 0.5px;
-  transform: translate(0px, 0px);
+  transform: translate(5px, 5px);
   position: absolute;
+  background-color: white;
   box-sizing: border-box;
 }
 
 .input input {
-  color: var(--lightColor);
+  color: var(--normalColor);
   outline: none;
   border: none;
   z-index: 1;
   padding: 5px;
   background-color: transparent;
-  border-bottom: 2px solid;
+  border: 1px solid;
   font-size: 20px;
   font-family: 'open-sans';
+  border-radius: 5px;
 }
 
-.input input:focus + label {
-  color: var(--darkestColor);
-  animation: slideUp 0.2s ease-in-out;
-  transform: translate(0px, -25px);
-}
-
-.input:hover > label {
-  color: var(--darkestColor);
-  transition: 0.5s;
+.input:hover > label,
+.input:hover > input {
+  color: var(--darkColor);
+  transition: 0.2s;
 }
 
 .input input:focus {
-  color: var(--darkestColor);
+  color: var(--darkColor);
+}
+
+.input .focus,
+.input .hasValue {
+  color: var(--darkColor);
+  animation: slideUp 0.2s ease-in-out;
+  z-index: 1;
+  background-color: white;
+  transform: translate(5px, -18px);
 }
 
 @keyframes slideUp {
   from {
-    transform: translate(0px, 0px);
+    transform: translate(5px, 5px);
   }
   to {
-    transform: translate(0px, -25px);
+    transform: translate(5px, -18px);
   }
 }
