@@ -1,14 +1,52 @@
 .input {
   display: flex;
   flex-flow: column;
-  color: var(--darkColor);
+  color: var(--lightColor);
+  font-size: 20px;
+  font-family: 'open-sans';
+  margin: 10px 0;
 }
 
 .input label {
   text-transform: capitalize;
   letter-spacing: 0.5px;
+  transform: translate(0px, 0px);
+  position: absolute;
+  box-sizing: border-box;
 }
 
 .input input {
+  color: var(--lightColor);
+  outline: none;
+  border: none;
+  z-index: 1;
+  padding: 5px;
+  background-color: transparent;
+  border-bottom: 2px solid;
+  font-size: 20px;
+  font-family: 'open-sans';
+}
+
+.input input:focus + label {
   color: var(--darkestColor);
+  animation: slideUp 0.2s ease-in-out;
+  transform: translate(0px, -25px);
+}
+
+.input:hover > label {
+  color: var(--darkestColor);
+  transition: 0.5s;
+}
+
+.input input:focus {
+  color: var(--darkestColor);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translate(0px, 0px);
+  }
+  to {
+    transform: translate(0px, -25px);
+  }
 }
