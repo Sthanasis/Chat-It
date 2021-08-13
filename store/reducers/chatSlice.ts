@@ -37,6 +37,6 @@ export const { setRooms, setUserMessages, setOtherUserMessages } =
   counterSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectChat = (state: RootState) => state;
+export const selectState = (state: RootState) => state;
 
 export default counterSlice.reducer;

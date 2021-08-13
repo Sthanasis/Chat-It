@@ -1,9 +1,9 @@
 import React, { ReactEventHandler, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../store/hooks';
 import { setRooms } from '../store/reducers/chatSlice';
-import { SocketType } from '../store/store';
+import { SocketType } from '../utils/sockets';
 import Chat from './Chat/Chat';
+import { useAppSelector } from '../store/hooks';
 
 interface Props {
   socket: SocketType;
@@ -12,8 +12,7 @@ interface Props {
 const Landing = ({ socket }: Props): JSX.Element => {
   const [username, setUsername] = useState('');
   const [roomname, setRoomname] = useState('');
-
-  const rooms = useAppSelector((state) => state.chat.rooms);
+  const rooms = useAppSelector((state) => state.chatState.rooms);
 
   const dispatch = useDispatch();
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {

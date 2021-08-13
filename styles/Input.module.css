@@ -48,6 +48,30 @@
   transform: translate(5px, -18px);
 }
 
+.options {
+  background-color: var(--lighterColor);
+  position: absolute;
+  width: 220px;
+  color: var(--darkColor);
+  z-index: 1;
+  padding: 10px;
+  border-radius: 5px;
+  transform: translate(5px, -20px);
+  box-shadow: 6px 7px 15px rgba(0, 0, 0, 0.3);
+}
+
+.options div {
+  cursor: pointer;
+  margin: 5px;
+  padding: 0 5px;
+}
+
+.options div:hover {
+  background-color: var(--normalColor);
+  border-radius: 2px;
+  transition: 0.2s;
+}
+
 @keyframes slideUp {
   from {
     transform: translate(5px, 5px);

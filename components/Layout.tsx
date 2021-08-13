@@ -11,7 +11,7 @@ const Layout = (props: Props): JSX.Element => {
   return (
     <div className={styles.Layout}>
       <Navbar />
-      <main className={styles.Main}>{props.children}</main>
+      <main>{props.children}</main>
       <Footer />
     </div>
   );

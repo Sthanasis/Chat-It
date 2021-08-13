@@ -4,7 +4,7 @@ import { to_Decrypt, to_Encrypt } from '../../aes';
 import Title from './Title';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
-import { SocketType } from '../../store/store';
+import { SocketType } from '../../utils/sockets';
 
 interface Props {
   socket: SocketType;

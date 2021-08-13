@@ -4,35 +4,49 @@ import Input from '../UI/Input';
 import { createUser } from '../../utils/api';
 import { generateUniqueUid, isEmail } from '../../utils/util';
 import { User } from '../../AppTypes';
+import styles from '../../styles/Form.module.css';
 
-const Login = (): JSX.Element => {
+const Signup = (): JSX.Element => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [verifyPassword, setVerifyPassword] = useState('');
   const [email, setEmail] = useState('');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
-  const [age, setAge] = useState<Date | null>(null);
+  const [age, setAge] = useState<string>(
+    new Date().toISOString().split('T')[0]
+  );
   const [gender, setGender] = useState('Female');
 
-  const submitHandler = () => {
-    const uid = generateUniqueUid();
-    if (password.trim() === verifyPassword.trim()) {
-      return;
+  const validateUserInput = () => {
+    if (password.trim() !== verifyPassword.trim()) {
+      return false;
     }
     if (username.trim() === '') {
-      return;
+      return false;
     }
     if (firstname.trim() === '') {
-      return;
+      return false;
     }
     if (lastname.trim() === '') {
-      return;
+      return false;
     }
     if (!age) {
-      return;
+      return false;
     }
-    if (email.trim() === '' || !isEmail(email)) {
+    if (email.trim() === '') {
+      return false;
+    } else {
+      if (!isEmail(email)) {
+        return false;
+      }
+    }
+    return true;
+  };
+  const submitHandler = async () => {
+    const uid = generateUniqueUid();
+    const validData = validateUserInput();
+    if (!validData) {
       return;
     }
     const user: User = {
@@ -45,35 +59,77 @@ const Login = (): JSX.Element => {
       uid,
       email,
     };
-    console.log(user);
-    return;
-    createUser(user);
+    try {
+      const res = await createUser(user);
+      console.log(res);
+    } catch (err) {
+      console.log(err.err.response.data);
+    }
   };
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>
-      <Input
-        type="text"
-        label="username"
-        value={username}
-        onChange={(e) => {
-          setUsername(e.target.value);
-        }}
-      />
+      <h4>Set Up Your Account</h4>
+      <div className={styles.Form}>
+        <Input
+          type="text"
+          label="username"
+          value={username}
+          onChange={(e) => {
+            setUsername(e.target.value);
+          }}
+        />
+        <Input
+          type="text"
+          label="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Input
+          type="password"
+          label="New password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Input
+          type="password"
+          label="Verify password"
+          value={verifyPassword}
+          onChange={(e) => setVerifyPassword(e.target.value)}
+        />
+      </div>
+      <h4>Personal Information</h4>
+      <div className={styles.Form}>
+        <Input
+          type="text"
+          label="First name"
+          value={firstname}
+          onChange={(e) => setFirstname(e.target.value)}
+        />
+        <Input
+          type="text"
+          label="Last name"
+          value={lastname}
+          onChange={(e) => setLastname(e.target.value)}
+        />
+
+        <Input
+          type="select"
+          value={gender}
+          onChange={(e) => setGender(e.target.value)}
+          onClick={(v) => setGender(v)}
+          label="Gender"
+          options={['Male', 'Female', 'Other']}
+        />
+
+        <Input
+          type="date"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+          label="Date of birth"
+        />
+      </div>
       <br />
-      <Input
-        type="password"
-        label="New password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <br />
-      <Input
-        type="password"
-        label="Verify password"
-        value={verifyPassword}
-        onChange={(e) => setVerifyPassword(e.target.value)}
-      />
       <Button type="submit" onClick={submitHandler}>
         Submit
       </Button>
@@ -81,4 +137,4 @@ const Login = (): JSX.Element => {
   );
 };
 
-export default Login;
+export default Signup;

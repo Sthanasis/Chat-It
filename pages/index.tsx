@@ -2,9 +2,11 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from '../components/Layout';
 import Landing from '../components/Landing';
-import { socket } from '../store/store';
+import { useAppSelector } from '../store/hooks';
 
-const Index: NextPage = () => {
+const HomePage: NextPage = () => {
+  const socket = useAppSelector((state) => state.socketState.socket);
+
   return (
     <div>
       <Head>
@@ -20,4 +22,4 @@ const Index: NextPage = () => {
   );
 };
 
-export default Index;
+export default HomePage;
