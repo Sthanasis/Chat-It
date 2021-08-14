@@ -5,6 +5,7 @@ import { createUser } from '../../utils/api';
 import { generateUniqueUid, isEmail } from '../../utils/util';
 import { User } from '../../AppTypes';
 import styles from '../../styles/Form.module.css';
+import Link from 'next/link';
 
 const Signup = (): JSX.Element => {
   const [username, setUsername] = useState('');
@@ -13,9 +14,7 @@ const Signup = (): JSX.Element => {
   const [email, setEmail] = useState('');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
-  const [age, setAge] = useState<string>(
-    new Date().toISOString().split('T')[0]
-  );
+  const [age, setAge] = useState(new Date().toISOString().split('T')[0]);
   const [gender, setGender] = useState('Female');
 
   const validateUserInput = () => {
@@ -31,7 +30,7 @@ const Signup = (): JSX.Element => {
     if (lastname.trim() === '') {
       return false;
     }
-    if (!age) {
+    if (age.trim() === '') {
       return false;
     }
     if (email.trim() === '') {
@@ -70,7 +69,7 @@ const Signup = (): JSX.Element => {
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       <h4>Set Up Your Account</h4>
-      <div className={styles.Form}>
+      <div className={styles.RegisterForm}>
         <Input
           type="text"
           label="username"
@@ -99,7 +98,7 @@ const Signup = (): JSX.Element => {
         />
       </div>
       <h4>Personal Information</h4>
-      <div className={styles.Form}>
+      <div className={styles.RegisterForm}>
         <Input
           type="text"
           label="First name"
@@ -129,10 +128,14 @@ const Signup = (): JSX.Element => {
           label="Date of birth"
         />
       </div>
-      <br />
-      <Button type="submit" onClick={submitHandler}>
-        Submit
-      </Button>
+      <div className={styles.FormButtons}>
+        <Button type="submit" onClick={submitHandler}>
+          Submit
+        </Button>
+        <Button type="transparent" onClick={() => {}} style={{}}>
+          <Link href="/user/sign-in"> Already Registered? Sign In.</Link>
+        </Button>
+      </div>
     </form>
   );
 };

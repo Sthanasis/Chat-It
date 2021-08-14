@@ -7,19 +7,7 @@ import { useAppSelector } from '../store/hooks';
 const HomePage: NextPage = () => {
   const socket = useAppSelector((state) => state.socketState.socket);
 
-  return (
-    <div>
-      <Head>
-        <title>Chat It</title>
-        <meta name="description" content="Chat It" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <Layout>
-        <Landing socket={socket} />
-      </Layout>
-    </div>
-  );
+  return <Landing socket={socket} />;
 };
 
 export default HomePage;

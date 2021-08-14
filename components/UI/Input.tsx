@@ -1,7 +1,6 @@
 import { InputPropsType } from '../../AppTypes';
 import styles from '../../styles/Input.module.css';
 import { useState } from 'react';
-import { useRef } from 'react';
 
 const Input = ({
   type,

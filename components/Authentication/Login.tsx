@@ -1,13 +1,10 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Button from '../UI/Button';
 import Input from '../UI/Input';
 import styles from '../../styles/Form.module.css';
+import Link from 'next/link';
 
-interface Props {
-  toSignUp: () => void;
-}
-
-const Login = ({ toSignUp }: Props): JSX.Element => {
+const Login = (): JSX.Element => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -32,8 +29,8 @@ const Login = ({ toSignUp }: Props): JSX.Element => {
         <Button onClick={() => {}} type="submit">
           Submit
         </Button>
-        <Button type="transparent" onClick={toSignUp} style={{}}>
-          Not registered? Sign Up.
+        <Button type="transparent" onClick={() => {}} style={{}}>
+          <Link href="/user/sign-up">Not registered? Sign Up.</Link>
         </Button>
       </div>
     </form>

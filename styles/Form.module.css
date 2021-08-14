@@ -1,5 +1,16 @@
-.Form {
+.RegisterForm {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.FormButtons {
+  display: flex;
+  flex-flow: column;
+}
+
+.LoginForm {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 10px;
 }

@@ -1,12 +1,18 @@
 .navBar {
   position: fixed;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
-  background-color: var(--lighterColor);
+  background-image: linear-gradient(
+    to right,
+    var(--lighterColor),
+    var(--normalColor)
+  );
   width: 100%;
   top: 0;
   height: 74px;
   display: flex;
   align-items: center;
+  font-family: 'Gilroy';
+
   padding: 0 10px;
 }
 
@@ -14,13 +20,29 @@
   font-family: 'Gilroy-Bold';
   font-size: 1.5rem;
   text-decoration: overline;
-  flex: 3;
+  flex: 1;
+}
+
+.routes {
+  flex: 2;
+}
+
+.routes ul {
+  display: flex;
+}
+
+.routes ul li {
+  text-decoration: none;
+  list-style: none;
+  margin: 0 10px;
+}
+.routes ul li:hover {
+  color: var(--darkColor);
 }
 
 .profiler {
   display: flex;
   align-items: center;
-  font-family: 'Gilroy';
 }
 
 .user {
