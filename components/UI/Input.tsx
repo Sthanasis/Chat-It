@@ -7,9 +7,7 @@ const Input = ({
   type,
   onChange,
   value,
-  inputType,
   label,
-  children,
   options,
   onClick,
 }: InputPropsType): JSX.Element => {
@@ -50,13 +48,19 @@ const Input = ({
         <input type="text" value={value} onChange={() => {}} />
         <label className={classList.join(' ')}>{label}</label>
         {focus && (
-          <div className={styles.options}>
-            {options?.map((option) => (
-              <div key={option} onClick={() => selectOptionHandler(option)}>
-                {option}
-              </div>
-            ))}
-          </div>
+          <>
+            <div
+              className={styles.backdrop}
+              onClick={() => setFocusState(false)}
+            ></div>
+            <div className={styles.options}>
+              {options?.map((option) => (
+                <div key={option} onClick={() => selectOptionHandler(option)}>
+                  {option}
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     );
