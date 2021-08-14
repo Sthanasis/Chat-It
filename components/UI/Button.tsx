@@ -1,4 +1,5 @@
 import { ButtonPropsType } from '../../AppTypes';
+import styles from '../../styles/Button.module.css';
 
 const Button = ({
   type,
@@ -8,10 +9,18 @@ const Button = ({
   className,
   style,
 }: ButtonPropsType): JSX.Element => {
-  const classes = [`custom-button${className ? ' ' + className : ''}`];
+  const classes = [`${styles.button}${className ? ' ' + className : ''}`];
 
   if (type === 'transparent') {
-    classes.push('button-transparent');
+    classes.push(styles.transparent);
+  }
+
+  if (type === 'primary') {
+    classes.push(styles.primary);
+  }
+
+  if (type === 'submit') {
+    classes.push(styles.submit);
   }
 
   return (

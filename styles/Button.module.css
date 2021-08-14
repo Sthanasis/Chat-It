@@ -1,0 +1,35 @@
+.button {
+  border: none;
+  outline: none;
+  font-size: 15px;
+  padding: 10px 15px;
+  border-radius: 3px;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.button:active,
+.button:focus {
+  outline: none;
+}
+
+.transparent {
+  background-color: transparent;
+  color: var(--darkcolor);
+  font-weight: bold;
+}
+
+.primary {
+  background-color: #3178c6;
+  color: white;
+}
+
+.button:hover {
+  opacity: 1;
+}
+
+.submit {
+  background-color: #3178c6;
+  color: white;
+  text-align: center;
+}
