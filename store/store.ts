@@ -6,9 +6,10 @@ import userReducer from './reducers/userSlice';
 const store = configureStore({
   reducer: {
     chatState: chatReducer,
-    socketState: socketReducer,
+    // socketState: socketReducer,
     userState: userReducer,
   },
+  devTools: true,
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

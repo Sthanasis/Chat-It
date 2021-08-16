@@ -5,12 +5,14 @@ interface UserState {
   isLoggedIn: boolean;
   username: string | null;
   uid: string | null;
+  token: string | null;
 }
 
 const initialState: UserState = {
   isLoggedIn: false,
   username: null,
   uid: null,
+  token: null,
 };
 
 export const UserSlice = createSlice({
@@ -26,10 +28,14 @@ export const UserSlice = createSlice({
     setUid: (state, action: PayloadAction<string | null>) => {
       state.uid = action.payload;
     },
+    setToken: (state, action: PayloadAction<string | null>) => {
+      state.token = action.payload;
+    },
   },
 });
 
-export const { setIsLoggedIn, setUsername, setUid } = UserSlice.actions;
+export const { setIsLoggedIn, setUsername, setUid, setToken } =
+  UserSlice.actions;
 export const selectState = (state: RootState) => state;
 
 export default UserSlice.reducer;

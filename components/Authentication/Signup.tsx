@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Button from '../UI/Button';
 import Input from '../UI/Input';
-import { createUser } from '../../utils/api';
+import { signupUser } from '../../utils/api';
 import { generateUniqueUid, isEmail } from '../../utils/util';
 import { User } from '../../AppTypes';
 import styles from '../../styles/Form.module.css';
@@ -43,26 +43,27 @@ const Signup = (): JSX.Element => {
     return true;
   };
   const submitHandler = async () => {
-    const uid = generateUniqueUid();
-    const validData = validateUserInput();
-    if (!validData) {
-      return;
-    }
-    const user: User = {
-      username,
-      password,
-      firstname,
-      lastname,
-      gender,
-      age,
-      uid,
-      email,
-    };
     try {
-      const res = await createUser(user);
-      console.log(res);
+      const uid = generateUniqueUid();
+      const validData = validateUserInput();
+      if (!validData) {
+        return;
+      }
+      const user: User = {
+        username,
+        password,
+        firstname,
+        lastname,
+        gender,
+        age,
+        uid,
+        email,
+      };
+      const res = await signupUser(user);
+      //TODO inform user that he created his account and check his email
     } catch (err) {
-      console.log(err.err.response.data);
+      //TODO error handling
+      console.log(err.response.data);
     }
   };
 

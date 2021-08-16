@@ -18,7 +18,7 @@ const Profiler = (): JSX.Element => {
           </div>
           <div className={styles.profilePhoto}>
             <FontAwesomeIcon icon={faUserAlt} size="2x" />
-          </div>{' '}
+          </div>
         </>
       ) : (
         <div>

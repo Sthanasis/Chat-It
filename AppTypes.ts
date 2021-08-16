@@ -42,3 +42,8 @@ export interface User {
   password: string;
   uid: string;
 }
+
+export interface UserCredentials {
+  username: string;
+  password: string;
+}
