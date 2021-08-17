@@ -1,33 +1,26 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserAlt } from '@fortawesome/free-solid-svg-icons';
+import UserPhoto from '../UI/UserPhoto';
 import styles from '../../styles/Toolbar.module.css';
 import { useAppSelector } from '../../store/hooks';
 import Button from '../UI/Button';
 
 const Profiler = (): JSX.Element => {
   const isAuth = useAppSelector((state) => state.userState.isLoggedIn);
+  const user = useAppSelector((state) => state.userState.user);
 
   return (
     <div className={styles.profiler}>
-      {isAuth ? (
-        <>
-          <div className={styles.user}>
-            <a href="#">John Doe</a>
-          </div>
-          <div className={styles.profilePhoto}>
-            <FontAwesomeIcon icon={faUserAlt} size="2x" />
-          </div>
-        </>
+      {isAuth && user ? (
+        <UserPhoto user={user} />
       ) : (
         <div>
           <Button type="transparent" onClick={() => {}}>
             <Link href="/user/sign-in/">Sign in</Link>
           </Button>
-          <Button type="transparent" onClick={() => {}}>
+          {/* <Button type="transparent" onClick={() => {}}>
             <Link href="/user/sign-up/">Sign up</Link>
-          </Button>
+          </Button> */}
         </div>
       )}
     </div>

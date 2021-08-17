@@ -22,7 +22,13 @@ const Button = ({
   if (type === 'submit') {
     classes.push(styles.submit);
   }
+  if (type === 'add') {
+    classes.push(styles.add);
+  }
 
+  if (type === 'remove') {
+    classes.push(styles.remove);
+  }
   return (
     <button
       className={classes.join(' ')}

@@ -1,8 +1,11 @@
 import Link from 'next/link';
+import { useAppSelector } from '../../store/hooks';
 import styles from '../../styles/Toolbar.module.css';
 import Profiler from './Profiler';
 
 const NavBar = (): JSX.Element => {
+  const isLoggedIn = useAppSelector((state) => state.userState.isLoggedIn);
+  const userId = useAppSelector((state) => state.userState.user?.uid);
   return (
     <div className={styles.navBar}>
       <div className={styles.logo}>Chat It</div>
@@ -11,9 +14,20 @@ const NavBar = (): JSX.Element => {
           <li>
             <Link href="/">Home</Link>
           </li>
-          <li>
-            <Link href="/user">Profile</Link>
-          </li>
+          {isLoggedIn && (
+            <>
+              <li>
+                <Link href="/profile" shallow>
+                  Profile
+                </Link>
+              </li>
+              <li>
+                <Link href={`/user`} shallow>
+                  Connections
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
       </div>
       <Profiler />

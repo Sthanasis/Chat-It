@@ -3,7 +3,7 @@ import Button from '../UI/Button';
 import Input from '../UI/Input';
 import { signupUser } from '../../utils/api';
 import { generateUniqueUid, isEmail } from '../../utils/util';
-import { User } from '../../AppTypes';
+import { UserDBSchema, UserInputData } from '../../AppTypes';
 import styles from '../../styles/Form.module.css';
 import Link from 'next/link';
 
@@ -49,7 +49,7 @@ const Signup = (): JSX.Element => {
       if (!validData) {
         return;
       }
-      const user: User = {
+      const user: UserDBSchema = {
         username,
         password,
         firstname,
@@ -58,6 +58,8 @@ const Signup = (): JSX.Element => {
         age,
         uid,
         email,
+        active: false,
+        connectedTo: [],
       };
       const res = await signupUser(user);
       //TODO inform user that he created his account and check his email

@@ -39,11 +39,40 @@ export interface User {
   lastname: string;
   age: string;
   email: string;
+  uid: string;
+  connectedTo: string[];
+}
+
+export interface UserInputData {
+  username: string;
+  firstname: string;
+  gender: string;
+  lastname: string;
+  age: string;
+  email: string;
   password: string;
   uid: string;
 }
 
-export interface UserCredentials {
+export interface UserDBSchema {
   username: string;
+  firstname: string;
+  gender: string;
+  lastname: string;
+  age: string;
+  email: string;
+  password: string;
+  uid: string;
+  active: boolean;
+  connectedTo: string[];
+}
+
+export interface UserStatus {
+  uid: string;
+  active: boolean;
+}
+
+export interface UserCredentials {
+  email: string;
   password: string;
 }

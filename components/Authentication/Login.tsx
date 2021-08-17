@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '../UI/Button';
 import Input from '../UI/Input';
 import styles from '../../styles/Form.module.css';
 import Link from 'next/link';
 import { authenticate } from '../../utils/api';
-import { setIsLoggedIn, setToken } from '../../store/reducers/userSlice';
+import {
+  setFriends,
+  setIsAuth,
+  setToken,
+  setUser,
+} from '../../store/reducers/userSlice';
 import { useAppDispatch } from '../../store/hooks';
+import { socket } from '../../utils/sockets';
+import { User } from '../../AppTypes';
 
 const Login = (): JSX.Element => {
   const [email, setEmail] = useState('');
@@ -14,11 +21,17 @@ const Login = (): JSX.Element => {
 
   const loginUser = async () => {
     try {
-      const res = await authenticate({ username: email, password });
+      const res = await authenticate({ email, password });
       if (res.data.ok) {
         const token: string = res.data.result.token;
-        dispatch(setIsLoggedIn(true));
+        const user: User = res.data.result.user;
+        dispatch(setIsAuth(true));
         dispatch(setToken(token));
+        dispatch(setUser(user));
+        dispatch(setFriends(user.connectedTo));
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token', JSON.stringify(token));
+        socket.emit('active', { uid: user.uid, active: true });
       }
     } catch (err) {
       console.log({ err });

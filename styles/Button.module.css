@@ -33,3 +33,13 @@
   color: white;
   text-align: center;
 }
+
+.add {
+  background-color: var(--add);
+  color: white;
+}
+
+.remove {
+  background-color: var(--remove);
+  color: white;
+}

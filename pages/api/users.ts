@@ -1,51 +1,77 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { MongoClient } from 'mongodb';
-import { User } from '../../AppTypes';
+
 import { catchAsync } from '../../utils/util';
+import { User } from '../../AppTypes';
 
 const getUserHandler = catchAsync(
   async (req: NextApiRequest, res: NextApiResponse) => {
+    res.setHeader(
+      'Cache-control',
+      'public, s-maxage=10, stale-while-revalidate=59'
+    );
     const client = await MongoClient.connect(
       'mongodb+srv://sakis:10921092@yad.tbrsb.mongodb.net/chatIt?retryWrites=true&w=majority'
     );
-    const email: string = req.body;
+    const uid: string = req.body.uid;
     const db = client.db();
     const userCollection = db.collection('users');
-    const result = await userCollection.findOne({ email });
+    const result = await userCollection.findOne({ uid });
+    client.close();
     if (result) {
-      res
-        .status(200)
-        .json({ ok: true, message: 'User found', result, error: null });
+      res.json({ ok: true, message: 'User found', result, error: null });
+      res.status(200).end();
     } else {
-      res
-        .status(200)
-        .json({ ok: true, message: 'User not found', error: null });
+      res.json({ ok: true, message: 'User not found', error: null });
+      res.status(200).end();
     }
   }
 );
 
-const getAllUsersHandler = catchAsync(
+const updateUserStatus = catchAsync(
   async (req: NextApiRequest, res: NextApiResponse) => {
+    res.setHeader(
+      'Cache-control',
+      'public, s-maxage=10, stale-while-revalidate=59'
+    );
+    const client = await MongoClient.connect(
+      'mongodb+srv://sakis:10921092@yad.tbrsb.mongodb.net/chatIt?retryWrites=true&w=majority'
+    );
+    const { uid, active } = req.body;
+    const db = client.db();
+    const userCollection = db.collection('users');
+    const result = await userCollection.findOneAndUpdate(
+      { uid },
+      { $set: { active } }
+    );
+    client.close();
+    if (result.ok) {
+      res.json({ ok: true });
+      res.status(200).end();
+    } else {
+      res.json({ ok: false });
+      res.status(200).end();
+    }
+  }
+);
+
+const getAllActiveUsers = catchAsync(
+  async (req: NextApiRequest, res: NextApiResponse) => {
+    res.setHeader(
+      'Cache-control',
+      'public, s-maxage=10, stale-while-revalidate=59'
+    );
     const client = await MongoClient.connect(
       'mongodb+srv://sakis:10921092@yad.tbrsb.mongodb.net/chatIt?retryWrites=true&w=majority'
     );
     const db = client.db();
     const userCollection = db.collection('users');
-    const result: User[] = await userCollection.find({}).toArray();
-    const users = result.map((u) => {
-      return {
-        username: u.username,
-        uid: u.uid,
-        email: u.email,
-        firstname: u.firstname,
-        lastname: u.lastname,
-        gender: u.gender,
-        age: u.age,
-      };
-    });
-    res
-      .status(200)
-      .json({ ok: true, message: 'User not found', users, error: null });
+    const result: User[] = await userCollection
+      .find({ active: true }, { projection: { password: 0, _id: 0 } })
+      .toArray();
+    client.close();
+    res.json({ users: result });
+    res.status(200).end();
   }
 );
 
@@ -54,6 +80,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     getUserHandler(req, res);
   }
   if (req.method === 'GET') {
-    getAllUsersHandler(req, res);
+    getAllActiveUsers(req, res);
+  }
+  if (req.method === 'PATCH') {
+    updateUserStatus(req, res);
   }
 }

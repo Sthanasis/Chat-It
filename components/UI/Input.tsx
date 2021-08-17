@@ -1,6 +1,7 @@
 import { InputPropsType } from '../../AppTypes';
 import styles from '../../styles/Input.module.css';
 import { useState } from 'react';
+import React from 'react';
 
 const Input = ({
   type,
@@ -66,5 +67,4 @@ const Input = ({
   }
   return input;
 };
-
 export default Input;

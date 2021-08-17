@@ -21,3 +21,7 @@ export const catchAsync = (fn: Function) => {
     );
   };
 };
+
+export const hasLocalStorage = () => {
+  return typeof localStorage !== 'undefined' && localStorage.getItem('user');
+};

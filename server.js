@@ -1,6 +1,7 @@
 const app = require('express')();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
+const { url } = require('inspector');
 const next = require('next');
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -10,31 +11,21 @@ const nextHandler = nextApp.getRequestHandler();
 const port = 3000;
 
 io.on('connect', (socket) => {
-  console.log('connected');
-  socket.on('active', () => {
+  socket.on('active', async (data) => {
     //* create user
     // const p_user = join_User(socket.id, username, roomname);
-    console.log(socket.id, '=id');
-    // socket.join(p_user.room);
-    socket.join();
 
-    //display a welcome message to the user who have joined a room
-    // socket.emit('message', {
-    //   userId: p_user.id,
-    //   username: p_user.username,
-    //   text: `Welcome ${p_user.username}`,
-    //   isTyping: false,
-    //   isActive: true,
-    // });
-
-    //displays a joined room message to all other room users except that particular user
-    // socket.broadcast.to(p_user.room).emit('message', {
-    //   userId: p_user.id,
-    //   username: p_user.username,
-    //   text: `${p_user.username} has joined the chat`,
-    //   isTyping: false,
-    //   isActive: true,
-    // });
+    const res = await fetch('http://localhost:3000/api/users/', {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    const resp = await res.json();
+    if (resp.ok) {
+      socket.broadcast.emit('message', data);
+    }
   });
 
   //user sending message
@@ -85,6 +76,10 @@ nextApp.prepare().then(() => {
   });
 
   app.post('*', (req, res) => {
+    return nextHandler(req, res);
+  });
+
+  app.patch('*', (req, res) => {
     return nextHandler(req, res);
   });
 
