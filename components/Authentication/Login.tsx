@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '../UI/Button';
 import Input from '../UI/Input';
 import styles from '../../styles/Form.module.css';
 import Link from 'next/link';
-import { authenticate } from '../../utils/api';
+import { authenticate, updateUserStatus } from '../../utils/api';
 import { setIsAuth, setToken, setUser } from '../../store/reducers/userSlice';
 import { useAppDispatch } from '../../store/hooks';
 import { socket } from '../../utils/sockets';
@@ -20,13 +20,19 @@ const Login = (): JSX.Element => {
       if (res.data.ok) {
         const token: string = res.data.result.token;
         const user: User = res.data.result.user;
+
         dispatch(setIsAuth(true));
         dispatch(setToken(token));
         dispatch(setUser(user));
-        // dispatch(setFriends(user.connectedTo));
+
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('token', JSON.stringify(token));
-        socket.emit('active', { uid: user.uid, active: true });
+        try {
+          const setActiveStatus = await updateUserStatus(user.uid, true);
+          socket.emit('active', user.uid);
+        } catch (err) {
+          console.log({ err });
+        }
       }
     } catch (err) {
       console.log({ err });

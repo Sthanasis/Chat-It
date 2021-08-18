@@ -6,6 +6,7 @@ import { socket } from '../utils/sockets';
 import { UserDBSchema, UserStatus } from '../AppTypes';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setConnections } from '../store/reducers/userSlice';
+import { hasLocalStorage } from '../utils/util';
 
 interface Props {
   children: ReactNode;
@@ -16,13 +17,13 @@ const Layout = ({ children }: Props): JSX.Element => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     socket.on('message', (data: UserStatus) => {
-      const index = connections.findIndex((c) => c.uid === data.uid);
-      const updatedConnections = [...connections];
-      updatedConnections[index] = {
-        ...connections[index],
-        active: data.active,
-      };
+      const updatedConnections = connections.map((c) => {
+        return c.uid === data.uid ? { ...c, active: data.active } : c;
+      });
+      console.log(data);
+      console.log(connections);
       dispatch(setConnections(updatedConnections));
+      localStorage.setItem('connections', JSON.stringify(updatedConnections));
     });
   }, [socket]);
 

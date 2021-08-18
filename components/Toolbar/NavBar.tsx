@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import React from 'react';
 import { useAppSelector } from '../../store/hooks';
 import styles from '../../styles/Toolbar.module.css';
 import Profiler from './Profiler';
@@ -34,4 +35,4 @@ const NavBar = (): JSX.Element => {
     </div>
   );
 };
-export default NavBar;
+export default React.memo(NavBar);

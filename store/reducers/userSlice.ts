@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User, UserDBSchema } from '../../AppTypes';
-import { hasLocalStorage } from '../../utils/util';
 import type { RootState } from '../store';
 
 interface UserState {
@@ -9,6 +8,10 @@ interface UserState {
   token: string | null;
   connections: UserDBSchema[] | [];
 }
+
+const hasLocalStorage = () => {
+  return typeof localStorage !== 'undefined' && localStorage.getItem('user');
+};
 
 const initialState: UserState = {
   isLoggedIn: hasLocalStorage() ? true : false,
@@ -37,8 +40,7 @@ export const UserSlice = createSlice({
     setToken: (state, action: PayloadAction<string | null>) => {
       state.token = action.payload;
     },
-    setConnections: (state, action: PayloadAction<UserDBSchema[]>) => {
-      localStorage.setItem('connections', JSON.stringify(action.payload));
+    setConnections: (state, action: PayloadAction<UserDBSchema[] | []>) => {
       state.connections = action.payload;
     },
   },

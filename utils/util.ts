@@ -1,4 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { UserDBSchema } from '../AppTypes';
+import { useAppDispatch } from '../store/hooks';
+import { setConnections } from '../store/reducers/userSlice';
 
 export const generateUniqueUid = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {

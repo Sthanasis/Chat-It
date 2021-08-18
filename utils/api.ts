@@ -44,9 +44,8 @@ export const connectToUser = async (uid: string | undefined, uid2: string) => {
   }
 };
 
-export const signOutUser = (uid: string) => {
+export const signOutUser = () => {
   localStorage.removeItem('user');
   localStorage.removeItem('connections');
   localStorage.removeItem('token');
-  socket.emit('active', { uid, active: false });
 };

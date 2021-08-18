@@ -11,21 +11,13 @@ const nextHandler = nextApp.getRequestHandler();
 const port = 3000;
 
 io.on('connect', (socket) => {
-  socket.on('active', async (data) => {
+  socket.on('active', (uid) => {
     //* create user
-    // const p_user = join_User(socket.id, username, roomname);
 
-    const res = await fetch('http://localhost:3000/api/users/', {
-      method: 'PATCH',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(data),
+    socket.broadcast.emit('message', {
+      uid,
+      active: true,
     });
-    const resp = await res.json();
-    if (resp.ok) {
-      socket.broadcast.emit('message', data);
-    }
   });
 
   //user sending message
@@ -55,9 +47,12 @@ io.on('connect', (socket) => {
   });
 
   //when the user exits the room
-  socket.on('inactive', () => {
+  socket.on('inactive', (uid) => {
     //the user is deleted from array of users and a left room message displayed
-    console.log(socket.id);
+    socket.broadcast.emit('message', {
+      uid,
+      active: false,
+    });
     // if (p_user) {
     //   io.to(p_user.room).emit('message', {
     //     userId: p_user.id,

@@ -2,16 +2,34 @@ import Image from 'next/image';
 import Link from 'next/link';
 import UserPhoto from '../UI/UserPhoto';
 import styles from '../../styles/Toolbar.module.css';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import Button from '../UI/Button';
-import { signOutUser } from '../../utils/api';
+import { signOutUser, updateUserStatus } from '../../utils/api';
+import {
+  setConnections,
+  setIsAuth,
+  setToken,
+  setUser,
+} from '../../store/reducers/userSlice';
+import { socket } from '../../utils/sockets';
 
 const Profiler = (): JSX.Element => {
   const isAuth = useAppSelector((state) => state.userState.isLoggedIn);
   const user = useAppSelector((state) => state.userState.user);
-  const signOut = () => {
-    if (user) {
-      signOutUser(user.uid);
+  const dispatch = useAppDispatch();
+
+  const signOut = async () => {
+    if (user && isAuth) {
+      const res = await updateUserStatus(user.uid, false);
+
+      if (res.data.ok) {
+        socket.emit('inactive', user.uid);
+        dispatch(setUser(null));
+        dispatch(setIsAuth(false));
+        dispatch(setConnections([]));
+        dispatch(setToken(null));
+        signOutUser();
+      }
     }
   };
   return (
