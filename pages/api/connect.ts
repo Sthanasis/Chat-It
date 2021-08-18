@@ -3,6 +3,12 @@ import { MongoClient } from 'mongodb';
 
 import { catchAsync } from '../../utils/util';
 
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+};
+
 const connectWithUser = catchAsync(
   async (req: NextApiRequest, res: NextApiResponse) => {
     const client = await MongoClient.connect(
@@ -24,22 +30,22 @@ const connectWithUser = catchAsync(
       { $addToSet: { connectedTo: myUid } }
     );
     const promises = Promise.all([updateFirst, updateSecond]);
-    console.log(promises);
+
     const result = await promises;
-    console.log(result);
+
     if (result) {
       res.json({
         ok: true,
         message: `You have connected with the user`,
         result: [updateFirst, updateSecond],
       });
-      res.status(201);
+      res.status(201).end();
     } else {
       res.json({
         ok: false,
         message: `Connecting with the user failed.`,
       });
-      res.status(400);
+      res.status(400).end();
     }
     client.close();
   }

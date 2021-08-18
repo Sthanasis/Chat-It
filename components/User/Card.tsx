@@ -1,9 +1,9 @@
-import { User } from '../../AppTypes';
+import { User, UserDBSchema } from '../../AppTypes';
 import UserPhoto from '../UI/UserPhoto';
 import styles from '../../styles/Userstyles.module.css';
 
 interface Props {
-  user: User;
+  user: UserDBSchema;
   onClick: (id: string) => void;
 }
 
@@ -15,6 +15,7 @@ const Card = ({ user, onClick }: Props): JSX.Element => {
       onClick={() => onClick(user.uid)}
     >
       <UserPhoto user={user} />
+      <div>Status:{user.active ? ' Active' : ' Inactive'}</div>
     </div>
   );
 };

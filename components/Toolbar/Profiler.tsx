@@ -4,15 +4,25 @@ import UserPhoto from '../UI/UserPhoto';
 import styles from '../../styles/Toolbar.module.css';
 import { useAppSelector } from '../../store/hooks';
 import Button from '../UI/Button';
+import { signOutUser } from '../../utils/api';
 
 const Profiler = (): JSX.Element => {
   const isAuth = useAppSelector((state) => state.userState.isLoggedIn);
   const user = useAppSelector((state) => state.userState.user);
-
+  const signOut = () => {
+    if (user) {
+      signOutUser(user.uid);
+    }
+  };
   return (
     <div className={styles.profiler}>
       {isAuth && user ? (
-        <UserPhoto user={user} />
+        <>
+          <UserPhoto user={user} />
+          <Button onClick={signOut} type="remove">
+            Sign out
+          </Button>
+        </>
       ) : (
         <div>
           <Button type="transparent" onClick={() => {}}>

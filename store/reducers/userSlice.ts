@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from '../../AppTypes';
+import { User, UserDBSchema } from '../../AppTypes';
 import { hasLocalStorage } from '../../utils/util';
 import type { RootState } from '../store';
 
@@ -7,7 +7,7 @@ interface UserState {
   isLoggedIn: boolean;
   user: User | null;
   token: string | null;
-  friends: User['connectedTo'];
+  connections: UserDBSchema[] | [];
 }
 
 const initialState: UserState = {
@@ -18,7 +18,10 @@ const initialState: UserState = {
   token:
     (hasLocalStorage() && JSON.parse(localStorage.getItem('token') || '{}')) ||
     null,
-  friends: [],
+  connections:
+    (hasLocalStorage() &&
+      JSON.parse(localStorage.getItem('connections') || '{}')) ||
+    [],
 };
 
 export const UserSlice = createSlice({
@@ -34,13 +37,15 @@ export const UserSlice = createSlice({
     setToken: (state, action: PayloadAction<string | null>) => {
       state.token = action.payload;
     },
-    setFriends: (state, action: PayloadAction<string[]>) => {
-      state.friends = action.payload;
+    setConnections: (state, action: PayloadAction<UserDBSchema[]>) => {
+      localStorage.setItem('connections', JSON.stringify(action.payload));
+      state.connections = action.payload;
     },
   },
 });
 
-export const { setIsAuth, setUser, setToken, setFriends } = UserSlice.actions;
+export const { setIsAuth, setUser, setToken, setConnections } =
+  UserSlice.actions;
 export const selectState = (state: RootState) => state;
 
 export default UserSlice.reducer;

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { UserInputData, UserCredentials, UserDBSchema } from '../AppTypes';
+import { socket } from './sockets';
 
 let configUrl = '';
 
@@ -23,8 +24,9 @@ export const getUser = async (uid: string) => {
   return res;
 };
 
-export const getAllUsers = async () => {
-  const res = await axios.get(`${configUrl}/users/`);
+export const getAllUsers = async (uids: string[]) => {
+  console.log(uids);
+  const res = await axios.get(`${configUrl}/users/?uids=${uids}`);
   return res;
 };
 
@@ -40,4 +42,11 @@ export const connectToUser = async (uid: string | undefined, uid2: string) => {
   } catch (err) {
     console.log({ err });
   }
+};
+
+export const signOutUser = (uid: string) => {
+  localStorage.removeItem('user');
+  localStorage.removeItem('connections');
+  localStorage.removeItem('token');
+  socket.emit('active', { uid, active: false });
 };

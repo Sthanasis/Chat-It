@@ -6,6 +6,12 @@ import { MongoClient } from 'mongodb';
 import { UserInputData } from '../../AppTypes';
 import { catchAsync } from '../../utils/util';
 
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+};
+
 const createUserHandler = catchAsync(
   async (req: NextApiRequest, res: NextApiResponse) => {
     const client = await MongoClient.connect(
@@ -18,7 +24,6 @@ const createUserHandler = catchAsync(
     if (result) {
       res.json({ ok: false, message: 'User exists', result, error: null });
       res.status(302).end();
-      return;
     }
 
     result = await userCollection.insertOne(user);
@@ -51,13 +56,13 @@ const login = catchAsync(async (req: NextApiRequest, res: NextApiResponse) => {
       };
 
       res.json({ ok: true, result, error: null });
-      res.status(200).end();
+      res.status(200);
     } else {
       res.json({
         ok: false,
         error: 'Make sure you entered the correct password',
       });
-      res.status(401).end();
+      res.status(401);
     }
   } else {
     res.json({ ok: false, error: 'Invalid credentials' });

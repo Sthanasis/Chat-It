@@ -4,12 +4,7 @@ import Input from '../UI/Input';
 import styles from '../../styles/Form.module.css';
 import Link from 'next/link';
 import { authenticate } from '../../utils/api';
-import {
-  setFriends,
-  setIsAuth,
-  setToken,
-  setUser,
-} from '../../store/reducers/userSlice';
+import { setIsAuth, setToken, setUser } from '../../store/reducers/userSlice';
 import { useAppDispatch } from '../../store/hooks';
 import { socket } from '../../utils/sockets';
 import { User } from '../../AppTypes';
@@ -28,7 +23,7 @@ const Login = (): JSX.Element => {
         dispatch(setIsAuth(true));
         dispatch(setToken(token));
         dispatch(setUser(user));
-        dispatch(setFriends(user.connectedTo));
+        // dispatch(setFriends(user.connectedTo));
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('token', JSON.stringify(token));
         socket.emit('active', { uid: user.uid, active: true });

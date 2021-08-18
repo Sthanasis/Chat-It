@@ -4,6 +4,12 @@ import { MongoClient } from 'mongodb';
 import { catchAsync } from '../../utils/util';
 import { User } from '../../AppTypes';
 
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+};
+
 const getUserHandler = catchAsync(
   async (req: NextApiRequest, res: NextApiResponse) => {
     res.setHeader(
@@ -44,7 +50,6 @@ const updateUserStatus = catchAsync(
       { uid },
       { $set: { active } }
     );
-    client.close();
     if (result.ok) {
       res.json({ ok: true });
       res.status(200).end();
@@ -52,6 +57,8 @@ const updateUserStatus = catchAsync(
       res.json({ ok: false });
       res.status(200).end();
     }
+    client.close();
+    return;
   }
 );
 
@@ -64,10 +71,17 @@ const getAllActiveUsers = catchAsync(
     const client = await MongoClient.connect(
       'mongodb+srv://sakis:10921092@yad.tbrsb.mongodb.net/chatIt?retryWrites=true&w=majority'
     );
+    const params = req.query.uids;
+    let uids;
+    if (!Array.isArray(params)) {
+      uids = [params];
+    } else {
+      uids = params;
+    }
     const db = client.db();
     const userCollection = db.collection('users');
     const result: User[] = await userCollection
-      .find({ active: true }, { projection: { password: 0, _id: 0 } })
+      .find({ uid: { $in: uids } }, { projection: { password: 0, _id: 0 } })
       .toArray();
     client.close();
     res.json({ users: result });
