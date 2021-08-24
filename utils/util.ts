@@ -28,3 +28,7 @@ export const catchAsync = (fn: Function) => {
 export const hasLocalStorage = () => {
   return typeof localStorage !== 'undefined' && localStorage.getItem('user');
 };
+
+export const combineUserUids = (uid1: string, uid2: string) => {
+  return uid1 > uid2 ? uid1 + uid2 : uid2 + uid1;
+};

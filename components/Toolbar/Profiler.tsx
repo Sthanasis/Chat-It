@@ -24,10 +24,11 @@ const Profiler = (): JSX.Element => {
 
       if (res.data.ok) {
         socket.emit('inactive', user.uid);
+        socket.disconnect();
         dispatch(setUser(null));
         dispatch(setIsAuth(false));
-        dispatch(setConnections([]));
         dispatch(setToken(null));
+        dispatch(setConnections([]));
         signOutUser();
       }
     }

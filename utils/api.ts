@@ -25,7 +25,6 @@ export const getUser = async (uid: string) => {
 };
 
 export const getAllUsers = async (uids: string[]) => {
-  console.log(uids);
   const res = await axios.get(`${configUrl}/users/?uids=${uids}`);
   return res;
 };

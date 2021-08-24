@@ -23,7 +23,7 @@ export interface InputPropsType {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClick?: (v: string) => void;
   value: string;
-  label: string;
+  label?: string;
   children?: ReactNode;
   disabled?: boolean;
   className?: string;
@@ -75,4 +75,20 @@ export interface UserStatus {
 export interface UserCredentials {
   email: string;
   password: string;
+}
+
+export interface Room {
+  id: string;
+  name: string;
+  senderUid: string;
+  receiverUid: string;
+  collapsed: boolean;
+  messages: Message[];
+  index?: number;
+}
+
+export interface Message {
+  uid: string | undefined;
+  message: string;
+  date: string;
 }

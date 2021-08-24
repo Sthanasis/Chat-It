@@ -1,0 +1,53 @@
+.Chat {
+  background-color: var(--darkColor);
+  color: white;
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  right: 10%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  display: flex;
+  width: 250px;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  flex-flow: column;
+  font-family: 'open-sans';
+}
+
+.Title {
+  padding: 10px;
+  background-color: var(--darkerColor);
+  width: 100%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.MessageList {
+  height: 250px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.MessageInput {
+  display: flex;
+  background-color: var(--darkerColor);
+  width: 100%;
+  justify-content: space-between;
+}
+
+.TextArea {
+  height: 100%;
+  outline: none;
+  resize: none;
+  overflow-y: auto;
+  width: 200px;
+  background: var(--lightColor);
+  margin: auto;
+  border-radius: 3px;
+  border: none;
+  color: var(--darkerColor);
+  padding: 5px;
+  font-family: 'open-sans';
+}

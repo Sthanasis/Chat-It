@@ -1,5 +1,11 @@
-const Message = (): JSX.Element => {
-  return <div></div>;
+import { Message } from '../../AppTypes';
+
+interface Props {
+  message: Message;
+}
+
+const MessageContainer = ({ message }: Props): JSX.Element => {
+  return <div>{message.message}</div>;
 };
 
-export default Message;
+export default MessageContainer;

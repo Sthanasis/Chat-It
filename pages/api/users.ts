@@ -84,7 +84,6 @@ const getAllActiveUsers = catchAsync(
       .find({ uid: { $in: uids } }, { projection: { password: 0, _id: 0 } })
       .toArray();
     client.close();
-    console.log(result);
     res.json({ users: result });
     res.status(200).end();
   }

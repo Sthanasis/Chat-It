@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
-import { MessageType } from '../../AppTypes';
+import { MessageType, Room } from '../../AppTypes';
 // Define a type for the slice state
 interface ChatState {
-  rooms: string[] | [];
+  rooms: Room[] | [];
   userMessages: MessageType | null;
   otherUserMessages: MessageType | null;
 }
@@ -21,8 +21,11 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
-    setRooms: (state, action: PayloadAction<string>) => {
+    setRooms: (state, action: PayloadAction<Room>) => {
       state.rooms = [...state.rooms, action.payload];
+    },
+    updateRooms: (state, action: PayloadAction<Room[]>) => {
+      state.rooms = action.payload;
     },
     setUserMessages: (state, action: PayloadAction<MessageType>) => {
       state.userMessages = action.payload;
@@ -33,7 +36,7 @@ export const counterSlice = createSlice({
   },
 });
 
-export const { setRooms, setUserMessages, setOtherUserMessages } =
+export const { setRooms, updateRooms, setUserMessages, setOtherUserMessages } =
   counterSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type

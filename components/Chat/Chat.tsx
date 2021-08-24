@@ -5,20 +5,21 @@ import Title from './Title';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 import { SocketType } from '../../utils/sockets';
+import styles from '../../styles/Chat.module.css';
+import { Room, User } from '../../AppTypes';
 
 interface Props {
-  socket: SocketType;
-  room: string;
+  room: Room;
 }
 
-const Chat = ({ socket, room }: Props): JSX.Element => {
+const Chat = ({ room }: Props): JSX.Element => {
   return (
-    <div>
+    <div className={styles.Chat}>
       <Title>
-        <span>{room}</span>
+        <span>{room.name}</span>
       </Title>
-      <MessageList />
-      <MessageInput />
+      <MessageList room={room} />
+      <MessageInput room={room} />
     </div>
   );
 };

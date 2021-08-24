@@ -10,6 +10,7 @@ const Input = ({
   label,
   options,
   onClick,
+  className,
 }: InputPropsType): JSX.Element => {
   let input = null;
   let classList: string[] = [];
@@ -31,7 +32,7 @@ const Input = ({
   };
   if (type !== 'select') {
     input = (
-      <div className={styles.input}>
+      <div className={[styles.input, className].join(' ')}>
         <input
           value={value}
           onChange={onChange}
@@ -44,7 +45,10 @@ const Input = ({
     );
   } else {
     input = (
-      <div className={styles.input} onFocus={() => setFocusState(true)}>
+      <div
+        className={[styles.input, className].join(' ')}
+        onFocus={() => setFocusState(true)}
+      >
         <input type="text" value={value} onChange={() => {}} />
         <label className={classList.join(' ')}>{label}</label>
         {focus && (

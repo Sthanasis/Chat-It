@@ -3,8 +3,13 @@ import Button from '../UI/Button';
 import Input from '../UI/Input';
 import styles from '../../styles/Form.module.css';
 import Link from 'next/link';
-import { authenticate, updateUserStatus } from '../../utils/api';
-import { setIsAuth, setToken, setUser } from '../../store/reducers/userSlice';
+import { authenticate, getAllUsers, updateUserStatus } from '../../utils/api';
+import {
+  setConnections,
+  setIsAuth,
+  setToken,
+  setUser,
+} from '../../store/reducers/userSlice';
 import { useAppDispatch } from '../../store/hooks';
 import { socket } from '../../utils/sockets';
 import { User } from '../../AppTypes';
@@ -29,7 +34,19 @@ const Login = (): JSX.Element => {
         localStorage.setItem('token', JSON.stringify(token));
         try {
           const setActiveStatus = await updateUserStatus(user.uid, true);
-          socket.emit('active', user.uid);
+          getAllUsers(user.connectedTo)
+            .then((res) => {
+              dispatch(setConnections(res.data.users));
+              localStorage.setItem(
+                'connections',
+                JSON.stringify(res.data.users)
+              );
+              socket.connect();
+              socket.emit('active', { ...user });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         } catch (err) {
           console.log({ err });
         }

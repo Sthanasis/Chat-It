@@ -10,33 +10,55 @@ const nextHandler = nextApp.getRequestHandler();
 
 const port = 3000;
 
-io.on('connect', (socket) => {
-  socket.on('active', (uid) => {
-    //* create user
+//active users array
+let users = [];
 
-    socket.broadcast.emit('message', {
-      uid,
+const addUSer = (socketId, data) => {
+  !users.some((user) => user.data.uid === data.uid) &&
+    users.push({ socketId, data });
+};
+
+const editUser = (socketId, data) => {
+  users = users.map((user) =>
+    user.data.uid === data.uid ? { socketId, data } : user
+  );
+};
+
+const removeUser = (uid) => {
+  users = users.filter((user) => user.data.uid !== uid);
+};
+
+const getUser = (uid) => {
+  return users.find((user) => user.data.uid === uid);
+};
+
+io.on('connect', (socket) => {
+  socket.on('active', (data) => {
+    addUSer(socket.id, data);
+    socket.broadcast.emit('userSignIn', {
+      uid: data.uid,
       active: true,
     });
   });
-
+  socket.on('reconnect', (user) => {
+    addUSer(socket.id, user);
+    editUser(socket.id, user);
+  });
+  socket.on('start chat', (room) => {
+    const receiver = getUser(room.receiverUid);
+    const sender = getUser(room.senderUid);
+    io.to(receiver.socketId).to(sender.socketId).emit('startChat', {
+      test: 'test',
+    });
+  });
   //user sending message
-  socket.on('chat', (text) => {
-    //gets the room user and the message sent
-    // const p_user = get_Current_User(socket.id);
-    console.log(socket.id);
-    // io.to(p_user.room).emit('message', {
-    //   userId: p_user.id,
-    //   username: p_user.username,
-    //   text: text,
-    //   isTyping: false,
-    //   isActive: true,
-    // });
+  socket.on('send-message', (room) => {
+    const receiver = getUser(room.receiverUid);
+    const sender = getUser(room.senderUid);
+    io.to(receiver.socketId).to(sender.socketId).emit('chat', room);
   });
 
   socket.on('typing', (isTyping) => {
-    console.log(socket.id);
-
     // io.to(p_user.room).emit('message', {
     //   userId: p_user.id,
     //   username: p_user.username,
@@ -49,7 +71,8 @@ io.on('connect', (socket) => {
   //when the user exits the room
   socket.on('inactive', (uid) => {
     //the user is deleted from array of users and a left room message displayed
-    socket.broadcast.emit('message', {
+    removeUser(uid);
+    socket.broadcast.emit('userSignOut', {
       uid,
       active: false,
     });
