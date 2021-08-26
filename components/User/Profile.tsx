@@ -2,7 +2,7 @@ import { Room, User } from '../../AppTypes';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setRooms } from '../../store/reducers/chatSlice';
 import { connectToUser } from '../../utils/api';
-import { socket } from '../../utils/sockets';
+
 import { combineUserUids } from '../../utils/util';
 import Button from '../UI/Button';
 
@@ -20,6 +20,8 @@ const Profile = ({ user }: Props): JSX.Element => {
       const room: Room = {
         id: combineUserUids(user.uid, currentUser.uid),
         name: user.firstname,
+        senderName: user.firstname,
+        receiverName: currentUser.firstname,
         senderUid: currentUser.uid,
         receiverUid: user.uid,
         collapsed: false,
@@ -28,16 +30,7 @@ const Profile = ({ user }: Props): JSX.Element => {
       };
       if (rooms.some((r) => room.id === r.id)) return;
       dispatch(setRooms(room));
-      if (socket.connected) {
-        socket.emit('start chat', room);
-      } else {
-        socket.connect();
-        socket.emit(
-          'reconnect',
-          JSON.parse(localStorage.getItem('user') || '{}')
-        );
-        socket.emit('start chat', room);
-      }
+      // dispatch(setActiveChats([...activeChats, room.id]));
     }
   };
 

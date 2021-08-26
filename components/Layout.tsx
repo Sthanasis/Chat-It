@@ -1,13 +1,18 @@
 import Navbar from './Toolbar/NavBar';
 import Footer from './Footer';
-import { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import styles from '../styles/Layout.module.css';
 import { socket } from '../utils/sockets';
-import { Room, UserStatus } from '../AppTypes';
+import { Message, Room, UserStatus } from '../AppTypes';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setConnections } from '../store/reducers/userSlice';
 
-import { setRooms, updateRooms } from '../store/reducers/chatSlice';
+import {
+  setActiveChats,
+  setRooms,
+  updateRooms,
+} from '../store/reducers/chatSlice';
+import { combineUserUids } from '../utils/util';
 
 interface Props {
   children: ReactNode;
@@ -15,9 +20,8 @@ interface Props {
 
 const Layout = ({ children }: Props): JSX.Element => {
   const connections = useAppSelector((state) => state.userState.connections);
-  const rooms = useAppSelector((state) => state.chatState.rooms);
   const isAuth = useAppSelector((state) => state.userState.isLoggedIn);
-
+  const rooms = useAppSelector((state) => state.chatState.rooms);
   const dispatch = useAppDispatch();
 
   const setUserConnectionsStatus = (data: UserStatus) => {
@@ -27,6 +31,33 @@ const Layout = ({ children }: Props): JSX.Element => {
     dispatch(setConnections(updatedConnections));
     localStorage.setItem('connections', JSON.stringify(updatedConnections));
   };
+
+  useEffect(() => {
+    socket.on('startChat', (room: Room) => {
+      //if chatRoom close, open it for the receiver.
+      if (
+        !rooms.some(
+          (room) =>
+            room.id === combineUserUids(room.receiverUid, room.senderUid)
+        )
+      ) {
+        //reverse the chatRoom name so that it displays the name of the receiver
+        const newRoom = {
+          ...room,
+          name: room.receiverName,
+          receiverName: room.senderName,
+          senderName: room.senderName,
+          index: rooms.length,
+          receiverUid: room.receiverUid,
+          senderUid: room.senderUid,
+        };
+        dispatch(setRooms(newRoom));
+      }
+    });
+    return () => {
+      socket.off('startChat');
+    };
+  }, [rooms]);
 
   useEffect(() => {
     if (isAuth) {
@@ -46,29 +77,10 @@ const Layout = ({ children }: Props): JSX.Element => {
       setUserConnectionsStatus(data);
     });
 
-    socket.on('startChat', (data: any) => {
-      console.log(data);
-    });
-
-    socket.on('chat', (data: Room) => {
-      if (rooms.every((room) => room.id !== data.id)) {
-        console.log(rooms, data);
-        const sender = connections.find((user) => user.uid === data.senderUid);
-        if (sender)
-          dispatch(
-            setRooms({
-              ...data,
-              name: sender.firstname,
-              senderUid: data.receiverUid,
-              receiverUid: data.senderUid,
-            })
-          );
-      } else {
-        dispatch(
-          updateRooms(rooms.map((r, i) => (i === data.index ? data : r)))
-        );
-      }
-    });
+    return () => {
+      socket.off('userSignIn');
+      socket.off('userSignOut');
+    };
   }, [socket]);
 
   return (
@@ -80,4 +92,4 @@ const Layout = ({ children }: Props): JSX.Element => {
   );
 };
 
-export default Layout;
+export default React.memo(Layout);

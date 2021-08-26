@@ -1,24 +1,36 @@
-import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { to_Decrypt, to_Encrypt } from '../../aes';
 
 import Title from './Title';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
-import { SocketType } from '../../utils/sockets';
+import { socket } from '../../utils/sockets';
 import styles from '../../styles/Chat.module.css';
-import { Room, User } from '../../AppTypes';
+import { Message, Room } from '../../AppTypes';
+import { useState, useEffect } from 'react';
 
 interface Props {
   room: Room;
 }
 
 const Chat = ({ room }: Props): JSX.Element => {
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  useEffect(() => {
+    socket.on('chat', (data: Message) => {
+      setMessages([...messages, data]);
+      console.log(room);
+    });
+    return () => {
+      socket.off('chat');
+    };
+  }, [messages]);
+
   return (
     <div className={styles.Chat}>
       <Title>
         <span>{room.name}</span>
       </Title>
-      <MessageList room={room} />
+      <MessageList messages={messages} />
       <MessageInput room={room} />
     </div>
   );

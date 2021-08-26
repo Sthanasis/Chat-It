@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { UserInputData, UserCredentials, UserDBSchema } from '../AppTypes';
-import { socket } from './sockets';
+import { UserCredentials, UserDBSchema } from '../AppTypes';
 
 let configUrl = '';
 

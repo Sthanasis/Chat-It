@@ -4,6 +4,7 @@ import { MessageType, Room } from '../../AppTypes';
 // Define a type for the slice state
 interface ChatState {
   rooms: Room[] | [];
+  activeChats: string[];
   userMessages: MessageType | null;
   otherUserMessages: MessageType | null;
 }
@@ -11,6 +12,7 @@ interface ChatState {
 // Define the initial state using that type
 const initialState: ChatState = {
   rooms: [],
+  activeChats: [],
   userMessages: null,
   otherUserMessages: null,
 };
@@ -24,8 +26,11 @@ export const counterSlice = createSlice({
     setRooms: (state, action: PayloadAction<Room>) => {
       state.rooms = [...state.rooms, action.payload];
     },
+    setActiveChats: (state, action: PayloadAction<string[]>) => {
+      state.activeChats = action.payload;
+    },
     updateRooms: (state, action: PayloadAction<Room[]>) => {
-      state.rooms = action.payload;
+      state.rooms = [...action.payload];
     },
     setUserMessages: (state, action: PayloadAction<MessageType>) => {
       state.userMessages = action.payload;
@@ -36,8 +41,13 @@ export const counterSlice = createSlice({
   },
 });
 
-export const { setRooms, updateRooms, setUserMessages, setOtherUserMessages } =
-  counterSlice.actions;
+export const {
+  setRooms,
+  setActiveChats,
+  updateRooms,
+  setUserMessages,
+  setOtherUserMessages,
+} = counterSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectState = (state: RootState) => state;

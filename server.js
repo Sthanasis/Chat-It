@@ -47,15 +47,13 @@ io.on('connect', (socket) => {
   socket.on('start chat', (room) => {
     const receiver = getUser(room.receiverUid);
     const sender = getUser(room.senderUid);
-    io.to(receiver.socketId).to(sender.socketId).emit('startChat', {
-      test: 'test',
-    });
+    io.to(receiver.socketId).emit('startChat', room);
   });
   //user sending message
-  socket.on('send-message', (room) => {
-    const receiver = getUser(room.receiverUid);
-    const sender = getUser(room.senderUid);
-    io.to(receiver.socketId).to(sender.socketId).emit('chat', room);
+  socket.on('send-message', (message) => {
+    const receiver = getUser(message.receiverUid);
+    const sender = getUser(message.senderUid);
+    io.to(receiver.socketId).to(sender.socketId).emit('chat', message);
   });
 
   socket.on('typing', (isTyping) => {

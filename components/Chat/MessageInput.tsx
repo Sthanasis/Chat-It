@@ -4,10 +4,10 @@ import Button from '../UI/Button';
 
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import styles from '../../styles/Chat.module.css';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+
 import { socket } from '../../utils/sockets';
-import { Room } from '../../AppTypes';
-import { updateRooms } from '../../store/reducers/chatSlice';
+import { Message, Room } from '../../AppTypes';
+
 import React from 'react';
 
 interface Props {
@@ -16,26 +16,26 @@ interface Props {
 
 const MessageInput = ({ room }: Props): JSX.Element => {
   const [text, setText] = useState('');
-  const user = useAppSelector((state) => state.userState.user);
-  const rooms = useAppSelector((state) => state.chatState.rooms);
-  const dispatch = useAppDispatch();
+
   const messageTypeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
 
   const messageSendHandler = () => {
     if (text.trim() === '') return;
-    const newRoom = { ...room };
-
-    newRoom.messages = [
-      ...room.messages,
-      {
-        message: text,
-        date: Date.now().toString(),
-        uid: user?.uid,
-      },
-    ];
-    socket.emit('send-message', newRoom);
+    const message: Message = {
+      message: text,
+      date: Date.now().toString(),
+      receiverUid: room.receiverUid,
+      senderUid: room.senderUid,
+      senderName: room.senderName,
+      receiverName: room.receiverName,
+    };
+    if (socket.disconnected) {
+      socket.connect();
+    }
+    socket.emit('start chat', room);
+    socket.emit('send-message', message);
     // dispatch(
     //   updateRooms(rooms.map((r, i) => (i === newRoom.index ? newRoom : r)))
     // );

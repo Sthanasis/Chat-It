@@ -30,5 +30,5 @@ export const hasLocalStorage = () => {
 };
 
 export const combineUserUids = (uid1: string, uid2: string) => {
-  return uid1 > uid2 ? uid1 + uid2 : uid2 + uid1;
+  return uid1 > uid2 ? `${uid1}-${uid2}` : `${uid2}-${uid1}`;
 };

@@ -1,25 +1,33 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useEffect } from 'react';
-import { Room } from '../../AppTypes';
+import { Message } from '../../AppTypes';
 import styles from '../../styles/Chat.module.css';
 import Loader from '../utilities/Loader';
-import Message from './Message';
+import MessageContainer from './Message';
 
 interface Props {
-  room: Room;
+  messages: Message[];
 }
 
-const MessageList = ({ room }: Props): JSX.Element => {
-  const messages = room.messages;
+const MessageList = ({ messages }: Props): JSX.Element => {
   const [loading, setLoading] = useState(false);
+  const bottomElRef = useRef<null | HTMLDivElement>(null);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    bottomElRef.current?.scrollIntoView();
+  });
+
   return (
     <div className={styles.MessageList}>
       {loading ? (
         <Loader />
       ) : (
-        messages.map((m) => <Message key={m.date + m.uid} message={m} />)
+        <>
+          {messages.map((m) => (
+            <MessageContainer key={m.date + m.senderUid} message={m} />
+          ))}
+          <div ref={bottomElRef}></div>
+        </>
       )}
     </div>
   );

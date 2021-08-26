@@ -80,15 +80,20 @@ export interface UserCredentials {
 export interface Room {
   id: string;
   name: string;
+  senderName: string;
+  receiverName: string;
   senderUid: string;
   receiverUid: string;
   collapsed: boolean;
   messages: Message[];
-  index?: number;
+  index: number;
 }
 
 export interface Message {
-  uid: string | undefined;
+  senderUid: string;
+  receiverUid: string;
   message: string;
   date: string;
+  senderName: string;
+  receiverName: string;
 }
