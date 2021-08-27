@@ -18,10 +18,11 @@ const Chat = ({ room, onClose }: Props): JSX.Element => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [showChat, setShowChat] = useState(true);
   const [isTyping, setIsTyping] = useState(false);
+
   const userId = useAppSelector((state) => state.userState.user?.uid) || '';
   const receiverId =
     room.receiverUid === userId ? room.senderUid : room.receiverUid;
-
+  console.log(receiverId, userId);
   useEffect(() => {
     socket.on('chat', (data: Message) => {
       setMessages([...messages, data]);
@@ -60,6 +61,7 @@ const Chat = ({ room, onClose }: Props): JSX.Element => {
           <MessageInput room={room} receiverId={receiverId} userId={userId} />
         </>
       )}
+      <div>{userId}</div>
     </div>
   );
 };

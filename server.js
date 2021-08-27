@@ -44,9 +44,8 @@ io.on('connect', (socket) => {
     addUSer(socket.id, user);
     editUser(socket.id, user);
   });
-  socket.on('start chat', (room) => {
-    const receiver = getUser(room.receiverUid);
-    const sender = getUser(room.senderUid);
+  socket.on('start chat', ({ room, receiverId }) => {
+    const receiver = getUser(receiverId);
     io.to(receiver.socketId).emit('startChat', room);
   });
   //user sending message

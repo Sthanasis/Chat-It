@@ -29,10 +29,8 @@ const MessageInput = ({ room, receiverId, userId }: Props): JSX.Element => {
     const message: Message = {
       message: text,
       date: new Date(),
-      receiverUid:
-        room.receiverUid === receiverId ? room.receiverUid : room.senderUid,
-      senderUid:
-        room.receiverUid === receiverId ? room.senderUid : room.receiverUid,
+      receiverUid: receiverId,
+      senderUid: userId,
       senderName:
         room.receiverUid === receiverId ? room.senderName : room.receiverName,
       receiverName:
@@ -41,8 +39,7 @@ const MessageInput = ({ room, receiverId, userId }: Props): JSX.Element => {
     if (socket.disconnected) {
       socket.connect();
     }
-    console.log(message);
-    socket.emit('start chat', room);
+    socket.emit('start chat', { room, receiverId });
     socket.emit('send-message', message);
     setText('');
   };
