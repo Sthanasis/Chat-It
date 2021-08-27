@@ -7,9 +7,11 @@ import MessageContainer from './Message';
 
 interface Props {
   messages: Message[];
+  name: string;
+  isTyping: boolean;
 }
 
-const MessageList = ({ messages }: Props): JSX.Element => {
+const MessageList = ({ messages, name, isTyping }: Props): JSX.Element => {
   const [loading, setLoading] = useState(false);
   const bottomElRef = useRef<null | HTMLDivElement>(null);
 
@@ -26,7 +28,10 @@ const MessageList = ({ messages }: Props): JSX.Element => {
           {messages.map((m) => (
             <MessageContainer key={m.date + m.senderUid} message={m} />
           ))}
-          <div ref={bottomElRef} style={{ marginTop: '10px' }}></div>
+
+          <div ref={bottomElRef} style={{ marginTop: '10px' }}>
+            {isTyping && `${name} is typing...`}
+          </div>
         </>
       )}
     </div>

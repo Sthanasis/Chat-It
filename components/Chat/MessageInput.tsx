@@ -20,6 +20,7 @@ const MessageInput = ({ room, receiverId, userId }: Props): JSX.Element => {
   const [text, setText] = useState('');
 
   const messageTypeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    socket.emit('isTyping', { uid: receiverId, isTyping: true });
     setText(e.target.value);
   };
 
@@ -55,7 +56,9 @@ const MessageInput = ({ room, receiverId, userId }: Props): JSX.Element => {
       <textarea
         value={text}
         wrap="hard"
-        onBlur={() => {}}
+        onBlur={() =>
+          socket.emit('isTyping', { uid: receiverId, isTyping: false })
+        }
         onChange={messageTypeHandler}
         className={styles.TextArea}
       />

@@ -17,6 +17,7 @@ interface Props {
 const Chat = ({ room, onClose }: Props): JSX.Element => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [showChat, setShowChat] = useState(true);
+  const [isTyping, setIsTyping] = useState(false);
   const userId = useAppSelector((state) => state.userState.user?.uid) || '';
   const receiverId =
     room.receiverUid === userId ? room.senderUid : room.receiverUid;
@@ -25,14 +26,23 @@ const Chat = ({ room, onClose }: Props): JSX.Element => {
     socket.on('chat', (data: Message) => {
       setMessages([...messages, data]);
     });
+
     return () => {
       socket.off('chat');
     };
   }, [messages]);
 
+  useEffect(() => {
+    socket.on('typing', (typing: boolean) => {
+      setIsTyping(typing);
+    });
+    return () => {
+      socket.off('typing');
+    };
+  }, [isTyping]);
+
   const onHideChatHandler = (show: boolean) => {
     setShowChat(show);
-    console.log(room);
   };
 
   return (
@@ -42,7 +52,11 @@ const Chat = ({ room, onClose }: Props): JSX.Element => {
       </Title>
       {showChat && (
         <>
-          <MessageList messages={messages} />
+          <MessageList
+            messages={messages}
+            isTyping={isTyping}
+            name={room.name}
+          />
           <MessageInput room={room} receiverId={receiverId} userId={userId} />
         </>
       )}

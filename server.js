@@ -56,14 +56,9 @@ io.on('connect', (socket) => {
     io.to(receiver.socketId).to(sender.socketId).emit('chat', message);
   });
 
-  socket.on('typing', (isTyping) => {
-    // io.to(p_user.room).emit('message', {
-    //   userId: p_user.id,
-    //   username: p_user.username,
-    //   text: text,
-    //   isTyping: true,
-    //   isActive: true,
-    // });
+  socket.on('isTyping', ({ uid, isTyping }) => {
+    const user = getUser(uid);
+    io.to(user.socketId).emit('typing', isTyping);
   });
 
   //when the user exits the room
