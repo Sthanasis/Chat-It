@@ -35,6 +35,7 @@ const Layout = ({ children }: Props): JSX.Element => {
   useEffect(() => {
     socket.on('startChat', (room: Room) => {
       //if chatRoom close, open it for the receiver.
+      console.log('yo');
       if (
         !rooms.some(
           (room) =>
@@ -46,7 +47,7 @@ const Layout = ({ children }: Props): JSX.Element => {
           ...room,
           name: room.receiverName,
           receiverName: room.senderName,
-          senderName: room.senderName,
+          senderName: room.receiverName,
           index: rooms.length,
           receiverUid: room.receiverUid,
           senderUid: room.senderUid,

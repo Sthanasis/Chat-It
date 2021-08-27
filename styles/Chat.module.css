@@ -22,12 +22,16 @@
   width: 100%;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
 }
 
 .MessageList {
   height: 250px;
   overflow-y: auto;
   width: 100%;
+  padding-top: 10px;
 }
 
 .MessageInput {
@@ -50,4 +54,57 @@
   color: var(--darkerColor);
   padding: 5px;
   font-family: 'open-sans';
+}
+
+.message {
+  display: flex;
+  flex-flow: column;
+  padding: 1px 10px;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.sender {
+  margin-left: auto;
+  align-items: flex-end;
+  margin-right: 10px;
+}
+
+.receiver {
+  margin-right: auto;
+  align-items: flex-start;
+  margin-left: 10px;
+}
+
+.description {
+  font-size: 10px;
+  color: var(--lightColor);
+  height: 0px;
+  overflow-y: hidden;
+}
+
+.messageText {
+  background-color: white;
+  border-radius: 2em;
+  color: var(--darkerColor);
+  padding: 2px 10px;
+  cursor: pointer;
+}
+
+.visible {
+  height: 15px;
+  animation: grow ease-out 0.1s;
+}
+
+.closeIcon:hover {
+  color: red;
+}
+
+@keyframes grow {
+  from {
+    height: 0px;
+  }
+  to {
+    height: 15px;
+  }
 }

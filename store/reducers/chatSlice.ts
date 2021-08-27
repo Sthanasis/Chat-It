@@ -30,7 +30,7 @@ export const counterSlice = createSlice({
       state.activeChats = action.payload;
     },
     updateRooms: (state, action: PayloadAction<Room[]>) => {
-      state.rooms = [...action.payload];
+      state.rooms = action.payload;
     },
     setUserMessages: (state, action: PayloadAction<MessageType>) => {
       state.userMessages = action.payload;

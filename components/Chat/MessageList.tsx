@@ -14,7 +14,7 @@ const MessageList = ({ messages }: Props): JSX.Element => {
   const bottomElRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
-    bottomElRef.current?.scrollIntoView();
+    bottomElRef.current?.scrollIntoView(false);
   });
 
   return (
@@ -26,7 +26,7 @@ const MessageList = ({ messages }: Props): JSX.Element => {
           {messages.map((m) => (
             <MessageContainer key={m.date + m.senderUid} message={m} />
           ))}
-          <div ref={bottomElRef}></div>
+          <div ref={bottomElRef} style={{ marginTop: '10px' }}></div>
         </>
       )}
     </div>

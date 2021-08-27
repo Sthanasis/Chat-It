@@ -93,7 +93,7 @@ export interface Message {
   senderUid: string;
   receiverUid: string;
   message: string;
-  date: string;
+  date: Date;
   senderName: string;
   receiverName: string;
 }

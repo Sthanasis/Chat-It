@@ -12,9 +12,11 @@ import React from 'react';
 
 interface Props {
   room: Room;
+  receiverId: string;
+  userId: string;
 }
 
-const MessageInput = ({ room }: Props): JSX.Element => {
+const MessageInput = ({ room, receiverId, userId }: Props): JSX.Element => {
   const [text, setText] = useState('');
 
   const messageTypeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -25,20 +27,23 @@ const MessageInput = ({ room }: Props): JSX.Element => {
     if (text.trim() === '') return;
     const message: Message = {
       message: text,
-      date: Date.now().toString(),
-      receiverUid: room.receiverUid,
-      senderUid: room.senderUid,
-      senderName: room.senderName,
-      receiverName: room.receiverName,
+      date: new Date(),
+      receiverUid:
+        room.receiverUid === receiverId ? room.receiverUid : room.senderUid,
+      senderUid:
+        room.receiverUid === receiverId ? room.senderUid : room.receiverUid,
+      senderName:
+        room.receiverUid === receiverId ? room.senderName : room.receiverName,
+      receiverName:
+        room.receiverUid === receiverId ? room.receiverName : room.senderName,
     };
     if (socket.disconnected) {
       socket.connect();
     }
+    console.log(message);
     socket.emit('start chat', room);
     socket.emit('send-message', message);
-    // dispatch(
-    //   updateRooms(rooms.map((r, i) => (i === newRoom.index ? newRoom : r)))
-    // );
+    setText('');
   };
 
   return (
