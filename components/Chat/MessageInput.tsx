@@ -9,6 +9,7 @@ import { socket } from '../../utils/sockets';
 import { Message, Room } from '../../AppTypes';
 
 import React from 'react';
+import { postChat } from '../../utils/api';
 
 interface Props {
   room: Room;
@@ -24,7 +25,7 @@ const MessageInput = ({ room, receiverId, userId }: Props): JSX.Element => {
     setText(e.target.value);
   };
 
-  const messageSendHandler = () => {
+  const messageSendHandler = async () => {
     if (text.trim() === '') return;
     const message: Message = {
       message: text,
@@ -36,12 +37,21 @@ const MessageInput = ({ room, receiverId, userId }: Props): JSX.Element => {
       receiverName:
         room.receiverUid === receiverId ? room.receiverName : room.senderName,
     };
-    if (socket.disconnected) {
-      socket.connect();
-    }
-    socket.emit('start chat', { room, receiverId });
-    socket.emit('send-message', message);
     setText('');
+    try {
+      const postAction = await postChat(room.id, message);
+      if (postAction?.data.ok) {
+        if (socket.disconnected) {
+          socket.connect();
+        }
+        socket.emit('start chat', { room, receiverId });
+        socket.emit('send-message', message);
+      } else {
+        console.log(postAction?.data.message);
+      }
+    } catch (err) {
+      console.log({ err });
+    }
   };
 
   return (

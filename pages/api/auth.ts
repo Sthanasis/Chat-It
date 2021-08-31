@@ -5,6 +5,7 @@ import { secret } from '../../config';
 import { MongoClient } from 'mongodb';
 import { UserInputData } from '../../AppTypes';
 import { catchAsync } from '../../utils/util';
+import { to_Decrypt, to_Encrypt } from '../../aes';
 
 export const config = {
   api: {
@@ -17,9 +18,14 @@ const createUserHandler = catchAsync(
     const client = await MongoClient.connect(
       'mongodb+srv://sakis:10921092@yad.tbrsb.mongodb.net/chatIt?retryWrites=true&w=majority'
     );
-    const user: UserInputData = req.body;
+
     const db = client.db();
     const userCollection = db.collection('users');
+
+    const user: UserInputData = req.body;
+    const encryptedPassword = to_Encrypt(user.password);
+    user.password = encryptedPassword;
+
     let result = await userCollection.findOne({ email: user.email });
     if (result) {
       res.json({ ok: false, message: 'User exists', result, error: null });
@@ -44,7 +50,7 @@ const login = catchAsync(async (req: NextApiRequest, res: NextApiResponse) => {
 
   const user = await userCollection.findOne({ email });
   if (user) {
-    if (user.password === password) {
+    if (to_Decrypt(user.password) === password) {
       const result = {
         token: jwt.sign(
           {

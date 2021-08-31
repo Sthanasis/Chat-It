@@ -1,5 +1,3 @@
-import { to_Decrypt, to_Encrypt } from '../../aes';
-
 import Title from './Title';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
@@ -8,6 +6,9 @@ import styles from '../../styles/Chat.module.css';
 import { Message, Room } from '../../AppTypes';
 import { useState, useEffect } from 'react';
 import { useAppSelector } from '../../store/hooks';
+import { getChat } from '../../utils/api';
+import { combineUserUids } from '../../utils/util';
+import Loader from '../utilities/Loader';
 
 interface Props {
   room: Room;
@@ -16,13 +17,15 @@ interface Props {
 
 const Chat = ({ room, onClose }: Props): JSX.Element => {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showChat, setShowChat] = useState(true);
   const [isTyping, setIsTyping] = useState(false);
+  const [limit, setLimit] = useState(0);
 
   const userId = useAppSelector((state) => state.userState.user?.uid) || '';
   const receiverId =
     room.receiverUid === userId ? room.senderUid : room.receiverUid;
-  console.log(receiverId, userId);
+
   useEffect(() => {
     socket.on('chat', (data: Message) => {
       setMessages([...messages, data]);
@@ -42,6 +45,22 @@ const Chat = ({ room, onClose }: Props): JSX.Element => {
     };
   }, [isTyping]);
 
+  useEffect(() => {
+    getChatRoomMessages();
+  }, [limit]);
+
+  const getChatRoomMessages = async () => {
+    try {
+      const res = await getChat(combineUserUids(userId, receiverId), limit);
+      if (res?.data.ok) {
+        setLoading(false);
+        setMessages(res?.data.result);
+      }
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+
   const onHideChatHandler = (show: boolean) => {
     setShowChat(show);
   };
@@ -57,11 +76,11 @@ const Chat = ({ room, onClose }: Props): JSX.Element => {
             messages={messages}
             isTyping={isTyping}
             name={room.name}
+            loading={loading}
           />
           <MessageInput room={room} receiverId={receiverId} userId={userId} />
         </>
       )}
-      <div>{userId}</div>
     </div>
   );
 };

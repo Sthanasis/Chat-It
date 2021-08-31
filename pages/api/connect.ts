@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { MongoClient } from 'mongodb';
 
-import { catchAsync } from '../../utils/util';
+import { catchAsync, combineUserUids } from '../../utils/util';
 
 export const config = {
   api: {
@@ -19,6 +19,7 @@ const connectWithUser = catchAsync(
 
     const db = client.db();
     const userCollection = db.collection('users');
+    const roomCollection = db.collection('chat-rooms');
 
     const updateFirst = userCollection.updateOne(
       { uid: myUid },
@@ -29,7 +30,12 @@ const connectWithUser = catchAsync(
       { uid: otherUid },
       { $addToSet: { connectedTo: myUid } }
     );
-    const promises = Promise.all([updateFirst, updateSecond]);
+
+    const createChatRoom = roomCollection.insertOne({
+      roomId: combineUserUids(myUid, otherUid),
+      chats: [],
+    });
+    const promises = Promise.all([updateFirst, updateSecond, createChatRoom]);
 
     const result = await promises;
 
@@ -37,7 +43,7 @@ const connectWithUser = catchAsync(
       res.json({
         ok: true,
         message: `You have connected with the user`,
-        result: [updateFirst, updateSecond],
+        result: [updateFirst, updateSecond, createChatRoom],
       });
       res.status(201).end();
     } else {

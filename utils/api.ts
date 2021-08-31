@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UserCredentials, UserDBSchema } from '../AppTypes';
+import { Message, UserCredentials, UserDBSchema } from '../AppTypes';
 
 let configUrl = '';
 
@@ -36,6 +36,26 @@ export const updateUserStatus = async (uid: string, active: boolean) => {
 export const connectToUser = async (uid: string | undefined, uid2: string) => {
   try {
     const res = await axios.put(`${configUrl}/connect/`, { uid, uid2 });
+    return res;
+  } catch (err) {
+    console.log({ err });
+  }
+};
+
+export const getChat = async (roomId: string, limit: Number) => {
+  try {
+    const res = await axios.get(
+      `${configUrl}/chat/?roomId=${roomId}&limit=${limit}`
+    );
+    return res;
+  } catch (err) {
+    console.log({ err });
+  }
+};
+
+export const postChat = async (roomId: string, message: Message) => {
+  try {
+    const res = await axios.post(`${configUrl}/chat/`, { roomId, message });
     return res;
   } catch (err) {
     console.log({ err });

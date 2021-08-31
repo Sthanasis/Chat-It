@@ -12,10 +12,6 @@ export const config = {
 
 const getUserHandler = catchAsync(
   async (req: NextApiRequest, res: NextApiResponse) => {
-    res.setHeader(
-      'Cache-control',
-      'public, s-maxage=10, stale-while-revalidate=59'
-    );
     const client = await MongoClient.connect(
       'mongodb+srv://sakis:10921092@yad.tbrsb.mongodb.net/chatIt?retryWrites=true&w=majority'
     );
@@ -36,10 +32,6 @@ const getUserHandler = catchAsync(
 
 const updateUserStatus = catchAsync(
   async (req: NextApiRequest, res: NextApiResponse) => {
-    res.setHeader(
-      'Cache-control',
-      'public, s-maxage=10, stale-while-revalidate=59'
-    );
     const client = await MongoClient.connect(
       'mongodb+srv://sakis:10921092@yad.tbrsb.mongodb.net/chatIt?retryWrites=true&w=majority'
     );
@@ -58,16 +50,11 @@ const updateUserStatus = catchAsync(
       res.status(200).end();
     }
     client.close();
-    return;
   }
 );
 
 const getAllActiveUsers = catchAsync(
   async (req: NextApiRequest, res: NextApiResponse) => {
-    res.setHeader(
-      'Cache-control',
-      'public, s-maxage=10, stale-while-revalidate=59'
-    );
     const client = await MongoClient.connect(
       'mongodb+srv://sakis:10921092@yad.tbrsb.mongodb.net/chatIt?retryWrites=true&w=majority'
     );
@@ -83,8 +70,8 @@ const getAllActiveUsers = catchAsync(
     const result: User[] = await userCollection
       .find({ uid: { $in: uids } }, { projection: { password: 0, _id: 0 } })
       .toArray();
-    client.close();
     res.json({ users: result });
+    client.close();
     res.status(200).end();
   }
 );

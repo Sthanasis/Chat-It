@@ -24,7 +24,6 @@ const UsersPage: NextPage = () => {
         getAllUsers(connectedTo)
           .then((res) => {
             setLoading(false);
-
             dispatch(setConnections(res.data.users));
             localStorage.setItem('connections', JSON.stringify(res.data.users));
           })

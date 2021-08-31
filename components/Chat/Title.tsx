@@ -2,6 +2,7 @@ import React from 'react';
 import styles from '../../styles/Chat.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+
 interface Props {
   children: React.ReactNode;
   onHideChat: () => void;

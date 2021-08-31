@@ -7,12 +7,8 @@ export const to_Encrypt = (text: string) => {
   return encrypted;
 };
 //welcome message is not decrypted
-export const to_Decrypt = (cipher: string, username: string) => {
+export const to_Decrypt = (cipher: string) => {
   if (cipher.startsWith('Welcome')) {
-    return cipher;
-  }
-
-  if (cipher.startsWith(username)) {
     return cipher;
   }
   //decryped message is returned

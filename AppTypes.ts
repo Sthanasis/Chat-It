@@ -97,3 +97,8 @@ export interface Message {
   senderName: string;
   receiverName: string;
 }
+
+export interface ChatRoomDbSchema {
+  roomId: string;
+  chats: Message[];
+}

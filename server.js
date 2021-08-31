@@ -93,6 +93,10 @@ nextApp.prepare().then(() => {
     return nextHandler(req, res);
   });
 
+  app.put('*', (req, res) => {
+    return nextHandler(req, res);
+  });
+
   server.listen(port, (err) => {
     if (err) throw err;
     console.log(`> Running on http://localhost:${port}`);
