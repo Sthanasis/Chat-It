@@ -1,12 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import chatReducer from './reducers/chatSlice';
-import socketReducer from './reducers/socketSlice';
+
 import userReducer from './reducers/userSlice';
 
 const store = configureStore({
   reducer: {
     chatState: chatReducer,
-    // socketState: socketReducer,
     userState: userReducer,
   },
   devTools: true,

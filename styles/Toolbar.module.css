@@ -1,18 +1,11 @@
 .navBar {
   position: fixed;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
-  background-image: linear-gradient(
-    to right,
-    var(--lighterColor),
-    var(--normalColor)
-  );
   width: 100%;
   top: 0;
   height: 74px;
   display: flex;
   align-items: center;
   font-family: 'Gilroy';
-
   padding: 0 10px;
 }
 
@@ -21,6 +14,7 @@
   font-size: 1.5rem;
   text-decoration: overline;
   flex: 1;
+  color: var(--neutral);
 }
 
 .routes {
@@ -37,7 +31,7 @@
   margin: 0 10px;
 }
 .routes ul li:hover {
-  color: var(--darkColor);
+  color: var(--neutral);
 }
 
 .profiler {
@@ -46,14 +40,25 @@
 }
 
 .user {
+  margin-left: 10px;
   margin-right: 10px;
 }
 
 .profilePhoto {
-  background-color: var(--darkestColor);
-  color: white;
+  background-color: white;
+  color: var(--darkerColor);
   padding: 10px;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+}
+
+.activeNeutral {
+  color: var(--neutral);
+}
+
+.activeMale {
+  color: var(--female);
+}
+
+.activeFemale {
+  color: var(--male);
 }

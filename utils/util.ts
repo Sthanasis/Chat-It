@@ -86,4 +86,6 @@ const isYesterday = (date: Date) => {
   }
 };
 
-export const getDaysDifference = (date: Date) => {};
+export const getBirthday = (date: string) => {
+  return new Date(date).toString().substring(4, 10);
+};

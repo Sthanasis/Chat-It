@@ -3,15 +3,11 @@ import Footer from './Footer';
 import React, { ReactNode, useEffect } from 'react';
 import styles from '../styles/Layout.module.css';
 import { socket } from '../utils/sockets';
-import { Message, Room, UserStatus } from '../AppTypes';
+import { Room, UserStatus } from '../AppTypes';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setConnections } from '../store/reducers/userSlice';
 
-import {
-  setActiveChats,
-  setRooms,
-  updateRooms,
-} from '../store/reducers/chatSlice';
+import { setRooms } from '../store/reducers/chatSlice';
 import { combineUserUids } from '../utils/util';
 
 interface Props {

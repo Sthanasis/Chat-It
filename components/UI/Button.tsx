@@ -9,7 +9,7 @@ const Button = ({
   className,
   style,
 }: ButtonPropsType): JSX.Element => {
-  const classes = [`${styles.button}${className ? ' ' + className : ''}`];
+  const classes = [`${styles.button}${!!className ? ' ' + className : ''}`];
 
   if (type === 'transparent') {
     classes.push(styles.transparent);
@@ -29,6 +29,10 @@ const Button = ({
   if (type === 'remove') {
     classes.push(styles.remove);
   }
+
+  if (type === 'Male') classes.push(styles.Male);
+  if (type === 'Female') classes.push(styles.Female);
+  if (type === 'Other') classes.push(styles.Neutral);
   return (
     <button
       className={classes.join(' ')}

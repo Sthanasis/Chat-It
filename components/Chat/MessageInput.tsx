@@ -15,9 +15,15 @@ interface Props {
   room: Room;
   receiverId: string;
   userId: string;
+  onAddNewMessage: (msg: Message) => void;
 }
 
-const MessageInput = ({ room, receiverId, userId }: Props): JSX.Element => {
+const MessageInput = ({
+  room,
+  receiverId,
+  userId,
+  onAddNewMessage,
+}: Props): JSX.Element => {
   const [text, setText] = useState('');
 
   const messageTypeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -38,6 +44,7 @@ const MessageInput = ({ room, receiverId, userId }: Props): JSX.Element => {
         room.receiverUid === receiverId ? room.receiverName : room.senderName,
     };
     setText('');
+    onAddNewMessage(message);
     try {
       const postAction = await postChat(room.id, message);
       if (postAction?.data.ok) {
@@ -47,9 +54,12 @@ const MessageInput = ({ room, receiverId, userId }: Props): JSX.Element => {
         socket.emit('start chat', { room, receiverId });
         socket.emit('send-message', message);
       } else {
+        //TODO inform user
         console.log(postAction?.data.message);
       }
     } catch (err) {
+      //TODO error handling
+
       console.log({ err });
     }
   };

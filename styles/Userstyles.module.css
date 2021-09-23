@@ -1,15 +1,80 @@
 .Card {
-  background-color: var(--darkColor);
-  color: white;
-  padding: 10px;
   border-radius: 3px;
-  cursor: pointer;
   box-shadow: 3px 5px 11px 0px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  background-color: var(--darkColor);
+  font-family: 'open-sans';
+  min-width: 200px;
+  color: var(--mainText);
 }
 
-.UsersContainer div {
-  margin: 10px;
+.profilePhoto {
+  background-color: var(--darkColor);
+  box-shadow: 0 -3px rgba(0, 0, 0, 0.1);
+  color: white;
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.user {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.profile {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  flex-flow: column;
+  padding: 10px;
+  transform: translate(0px, -40%);
+  margin: auto;
+  padding-bottom: 0;
+}
+
+.details {
+  padding: 10px;
+  text-align: center;
+  width: 100%;
+  padding-top: 0;
+}
+
+.details > div {
+  display: grid;
+  grid-template-columns: auto auto;
+  color: var(--secondaryText);
+  margin-top: 10px;
+}
+
+.details > div div span {
+  margin: 0 5px;
+}
+
+.Buttons {
+  margin: 20px auto;
+}
+
+.maleActive {
+  border: 3px solid var(--male);
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.femaleActive {
+  border: 3px solid var(--female);
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.neutralActive {
+  border: 3px solid var(--neutral);
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.inactive {
+  border: 3px solid grey;
+  border-radius: 50%;
+  padding: 10px;
 }

@@ -20,7 +20,7 @@ const UserList = ({ socket, users }: Props): JSX.Element => {
   return (
     <div className={styles.UsersContainer}>
       {users.map((user) => (
-        <Card key={user.uid} user={user} onClick={getOne} />
+        <Card key={user.uid} user={user} viewProfile={getOne} />
       ))}
     </div>
   );

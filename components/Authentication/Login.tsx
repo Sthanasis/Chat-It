@@ -3,7 +3,11 @@ import Button from '../UI/Button';
 import Input from '../UI/Input';
 import styles from '../../styles/Form.module.css';
 import Link from 'next/link';
-import { authenticate, getAllUsers, updateUserStatus } from '../../utils/api';
+import {
+  authenticate,
+  getConnections,
+  updateUserStatus,
+} from '../../utils/api';
 import {
   setConnections,
   setIsAuth,
@@ -34,7 +38,7 @@ const Login = (): JSX.Element => {
         localStorage.setItem('token', JSON.stringify(token));
         try {
           const setActiveStatus = await updateUserStatus(user.uid, true);
-          getAllUsers(user.connectedTo)
+          getConnections(user.connectedTo)
             .then((res) => {
               dispatch(setConnections(res.data.users));
               localStorage.setItem(

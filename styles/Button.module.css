@@ -6,6 +6,7 @@
   border-radius: 3px;
   opacity: 0.8;
   cursor: pointer;
+  font-family: 'open-sans';
 }
 
 .button:active,
@@ -42,4 +43,17 @@
 .remove {
   background-color: var(--remove);
   color: white;
+}
+
+.Female {
+  background-color: var(--female);
+  border-radius: 2em;
+  color: var(--darkerColor);
+}
+
+.Male {
+  background-color: var(--male);
+  border-radius: 2em;
+  color: var(--darkerColor);
+  font-weight: bold;
 }

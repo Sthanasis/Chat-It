@@ -6,7 +6,7 @@ import UsersList from '../../components/User/UsersList';
 import Loader from '../../components/utilities/Loader';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { setConnections } from '../../store/reducers/userSlice';
-import { getAllUsers } from '../../utils/api';
+import { getConnections } from '../../utils/api';
 import { socket } from '../../utils/sockets';
 
 const UsersPage: NextPage = () => {
@@ -21,7 +21,7 @@ const UsersPage: NextPage = () => {
   useEffect(() => {
     if (!localStorage.getItem('connections')) {
       if (connectedTo)
-        getAllUsers(connectedTo)
+        getConnections(connectedTo)
           .then((res) => {
             setLoading(false);
             dispatch(setConnections(res.data.users));

@@ -19,7 +19,7 @@ const getChat = catchAsync(
     const db = client.db();
     const roomCollection = db.collection('chat-rooms');
     const room = (await roomCollection.findOne({ roomId })) as ChatRoomDbSchema;
-    console.log(room.chats.slice(parseInt(limit), parseInt(limit) + 10));
+
     if (room) {
       res.json({
         ok: true,

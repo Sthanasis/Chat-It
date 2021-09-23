@@ -12,10 +12,13 @@ import {
   setUser,
 } from '../../store/reducers/userSlice';
 import { socket } from '../../utils/sockets';
+import { useState } from 'react';
+import { Fade, Grow } from '@material-ui/core';
 
 const Profiler = (): JSX.Element => {
   const isAuth = useAppSelector((state) => state.userState.isLoggedIn);
   const user = useAppSelector((state) => state.userState.user);
+
   const dispatch = useAppDispatch();
 
   const signOut = async () => {
@@ -47,9 +50,6 @@ const Profiler = (): JSX.Element => {
           <Button type="transparent" onClick={() => {}}>
             <Link href="/user/sign-in/">Sign in</Link>
           </Button>
-          {/* <Button type="transparent" onClick={() => {}}>
-            <Link href="/user/sign-up/">Sign up</Link>
-          </Button> */}
         </div>
       )}
     </div>

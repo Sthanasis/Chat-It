@@ -23,7 +23,7 @@ export const getUser = async (uid: string) => {
   return res;
 };
 
-export const getAllUsers = async (uids: string[]) => {
+export const getConnections = async (uids: string[]) => {
   const res = await axios.get(`${configUrl}/users/?uids=${uids}`);
   return res;
 };
@@ -66,4 +66,22 @@ export const signOutUser = () => {
   localStorage.removeItem('user');
   localStorage.removeItem('connections');
   localStorage.removeItem('token');
+};
+
+export const searchUser = async (search: string) => {
+  try {
+    const res = await axios.get(`${configUrl}/users/?search=${search}`);
+    console.log(res);
+  } catch (err) {
+    console.error({ err });
+  }
+};
+
+export const getAllUsers = async () => {
+  try {
+    const res = await axios.get(`${configUrl}/users/`);
+    console.log(res);
+  } catch (err) {
+    console.error({ err });
+  }
 };

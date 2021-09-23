@@ -53,11 +53,58 @@ const updateUserStatus = catchAsync(
   }
 );
 
+const searchUsers = catchAsync(
+  async (req: NextApiRequest, res: NextApiResponse) => {
+    const client = await MongoClient.connect(
+      'mongodb+srv://sakis:10921092@yad.tbrsb.mongodb.net/chatIt?retryWrites=true&w=majority'
+    );
+    const db = client.db();
+    const params = req.query.search;
+    let search: string;
+    if (!Array.isArray(params)) {
+      search = params;
+    } else {
+      search = params.join(' ');
+    }
+    //add schema for $text operator
+    db.collection('users').createIndex({ firstname: 'text', lastname: 'text' });
+
+    const userCollection = db.collection('users');
+    const result: User[] = await userCollection
+      .find(
+        { $text: { $search: search } },
+        { projection: { password: 0, _id: 0 } }
+      )
+      .toArray();
+
+    client.close();
+    res.json({ users: result });
+    res.status(200).end();
+  }
+);
+
+const getAllUsers = catchAsync(
+  async (req: NextApiRequest, res: NextApiResponse) => {
+    const client = await MongoClient.connect(
+      'mongodb+srv://sakis:10921092@yad.tbrsb.mongodb.net/chatIt?retryWrites=true&w=majority'
+    );
+    const db = client.db();
+    const userCollection = db.collection('users');
+    const result: User[] = await userCollection
+      .find({}, { projection: { password: 0, _id: 0 } })
+      .toArray();
+    res.json({ users: result });
+    client.close();
+    res.status(200).end();
+  }
+);
+
 const getAllActiveUsers = catchAsync(
   async (req: NextApiRequest, res: NextApiResponse) => {
     const client = await MongoClient.connect(
       'mongodb+srv://sakis:10921092@yad.tbrsb.mongodb.net/chatIt?retryWrites=true&w=majority'
     );
+    const db = client.db();
     const params = req.query.uids;
     let uids;
     if (!Array.isArray(params)) {
@@ -65,7 +112,6 @@ const getAllActiveUsers = catchAsync(
     } else {
       uids = params;
     }
-    const db = client.db();
     const userCollection = db.collection('users');
     const result: User[] = await userCollection
       .find({ uid: { $in: uids } }, { projection: { password: 0, _id: 0 } })
@@ -81,7 +127,13 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     getUserHandler(req, res);
   }
   if (req.method === 'GET') {
-    getAllActiveUsers(req, res);
+    if (req.query.search) {
+      searchUsers(req, res);
+    } else if (req.query.uids) {
+      getAllActiveUsers(req, res);
+    } else {
+      getAllUsers(req, res);
+    }
   }
   if (req.method === 'PATCH') {
     updateUserStatus(req, res);

@@ -26,9 +26,13 @@ const Chat = ({ room, onClose }: Props): JSX.Element => {
   const receiverId =
     room.receiverUid === userId ? room.senderUid : room.receiverUid;
 
+  const handleNewMessage = (data: Message) => {
+    setMessages([...messages, data]);
+  };
+
   useEffect(() => {
     socket.on('chat', (data: Message) => {
-      setMessages([...messages, data]);
+      handleNewMessage(data);
     });
 
     return () => {
@@ -78,7 +82,12 @@ const Chat = ({ room, onClose }: Props): JSX.Element => {
             name={room.name}
             loading={loading}
           />
-          <MessageInput room={room} receiverId={receiverId} userId={userId} />
+          <MessageInput
+            room={room}
+            receiverId={receiverId}
+            userId={userId}
+            onAddNewMessage={handleNewMessage}
+          />
         </>
       )}
     </div>

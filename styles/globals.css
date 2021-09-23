@@ -2,10 +2,18 @@
   --lighterColor: #e3f5e6;
   --lightColor: #c4ebc8;
   --normalColor: #b0d3b4;
-  --darkColor: #728b77;
-  --darkerColor: #202a25;
+  --darkColor: #24273c;
+  --darkerColor: #211e34;
   --add: #13aa52;
   --remove: #ff0000;
+  --female: #c38fff;
+  --darkFemale: #8c00a5;
+  --male: #0599f5;
+  --darkMale: #0860a8;
+  --neutral: #ffb900;
+  --darkNeutral: #bd5805;
+  --mainText: #d0d0d0;
+  --secondaryText: #9295a0;
 }
 
 html,
@@ -14,10 +22,11 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  color: var(--darkerColor);
+  color: white;
+  background-color: var(--darkerColor);
 }
+
 main {
-  padding-top: 74px;
 }
 
 a {
@@ -27,6 +36,14 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.visible {
+  display: '';
+}
+
+.hidden {
+  display: none;
 }
 
 @font-face {

@@ -1,7 +1,7 @@
 .input {
   display: flex;
   flex-flow: column;
-  color: var(--normalColor);
+  color: var(--secondaryText);
   font-size: 17px;
   font-family: 'open-sans';
   margin: 10px 0;
@@ -16,7 +16,7 @@
 }
 
 .input input {
-  color: var(--normalColor);
+  color: var(--secondaryText);
   outline: none;
   border: none;
   z-index: 1;
@@ -25,23 +25,24 @@
   border-bottom: 1px solid;
   font-size: 20px;
   font-family: 'open-sans';
+  padding-right: 20px;
   /* border-radius: 3px; */
 }
 
 .input:hover > label,
 .input:hover > input {
-  color: var(--darkColor);
-  transition: 0.2s;
+  color: var(--mainText);
+  transition: 0.1s;
 }
 
 .input input:focus {
-  color: var(--darkColor);
+  color: var(--mainText);
 }
 
 .input .focus,
 .input .hasValue {
-  color: var(--darkColor);
-  animation: slideUp 0.2s ease-in-out;
+  color: var(--mainText);
+  animation: slideUp 0.1s ease-in-out;
   z-index: 1;
   /* background-color: white; */
   transform: translate(5px, -18px);
@@ -61,7 +62,7 @@
   background-color: var(--lighterColor);
   position: absolute;
   /* width: 220px; */
-  color: var(--darkColor);
+  color: var(--mainText);
   z-index: 1;
   /* padding: 5px; */
   border-radius: 2 px;
@@ -78,7 +79,7 @@
 }
 
 .options div:hover {
-  background-color: var(--normalColor);
+  background-color: var(--secondaryText);
   border-radius: 2px;
   transition: 0.2s;
 }
@@ -89,6 +90,14 @@
   }
   to {
     transform: translate(5px, -18px);
+  }
+}
+@keyframes slideDown {
+  from {
+    transform: translate(5px, -18px);
+  }
+  to {
+    transform: translate(5px, 5px);
   }
 }
 

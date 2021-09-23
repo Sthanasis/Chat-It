@@ -41,23 +41,39 @@ io.on('connect', (socket) => {
     });
   });
   socket.on('reconnect', (user) => {
-    addUSer(socket.id, user);
-    editUser(socket.id, user);
+    try {
+      addUSer(socket.id, user);
+      editUser(socket.id, user);
+    } catch (err) {
+      console.log(err);
+    }
   });
   socket.on('start chat', ({ room, receiverId }) => {
-    const receiver = getUser(receiverId);
-    io.to(receiver.socketId).emit('startChat', room);
+    try {
+      const receiver = getUser(receiverId);
+      io.to(receiver.socketId).emit('startChat', room);
+    } catch (err) {
+      console.log(err);
+    }
   });
   //user sending message
   socket.on('send-message', (message) => {
-    const receiver = getUser(message.receiverUid);
-    const sender = getUser(message.senderUid);
-    io.to(receiver.socketId).to(sender.socketId).emit('chat', message);
+    try {
+      const receiver = getUser(message.receiverUid);
+      io.to(receiver.socketId).emit('chat', message);
+    } catch (err) {
+      console.log(message);
+      console.log('======================\n' + err);
+    }
   });
 
   socket.on('isTyping', ({ uid, isTyping }) => {
-    const user = getUser(uid);
-    io.to(user.socketId).emit('typing', isTyping);
+    try {
+      const user = getUser(uid);
+      io.to(user.socketId).emit('typing', isTyping);
+    } catch (err) {
+      console.log(err);
+    }
   });
 
   //when the user exits the room
@@ -68,15 +84,6 @@ io.on('connect', (socket) => {
       uid,
       active: false,
     });
-    // if (p_user) {
-    //   io.to(p_user.room).emit('message', {
-    //     userId: p_user.id,
-    //     username: p_user.username,
-    //     text: `${p_user.username} has left the room`,
-    //     isTyping: false,
-    //     isActive: false,
-    //   });
-    // }
   });
 });
 

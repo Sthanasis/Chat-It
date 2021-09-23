@@ -11,6 +11,7 @@ const Input = ({
   options,
   onClick,
   className,
+  children,
 }: InputPropsType): JSX.Element => {
   let input = null;
   let classList: string[] = [];
@@ -39,7 +40,9 @@ const Input = ({
           type={type}
           onFocus={() => setFocusState(true)}
           onBlur={() => setFocusState(false)}
-        />
+        >
+          {children}
+        </input>
         <label className={classList.join(' ')}>{label}</label>
       </div>
     );
